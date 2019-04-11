@@ -96,6 +96,7 @@
 	</dependencyManagement>
 
 	<build>
+		<finalName>video-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
