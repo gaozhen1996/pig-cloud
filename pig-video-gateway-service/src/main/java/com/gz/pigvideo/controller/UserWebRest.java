@@ -42,9 +42,6 @@ public class UserWebRest {
 				currentuser.login(token);
 				currentuser.getSession().setTimeout(-1001);
 				log.info(userName+" is login!");
-				
-				System.out.println(currentuser.isAuthenticated());
-				
 				User user = (User) currentuser.getSession().getAttribute("user");
 				JSONObject userObj = new JSONObject();
 				userObj.put("account", user.getAccount());
@@ -69,9 +66,6 @@ public class UserWebRest {
 		JSONObject response=new JSONObject();
 		try {
 			Subject currentUser = SecurityUtils.getSubject();
-			
-			System.out.println(currentUser.isAuthenticated());
-			
 			if (currentUser.isAuthenticated()) {
 				currentUser.logout();
 			}

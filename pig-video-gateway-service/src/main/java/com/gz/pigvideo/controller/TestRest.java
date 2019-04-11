@@ -26,6 +26,7 @@ public class TestRest {
 		JSONObject response=new JSONObject();
 		try {
 			Subject currentuser=SecurityUtils.getSubject();
+			System.out.println(currentuser.getSession().getAttribute("user"));
 			System.out.println(currentuser.isAuthenticated());
 		}catch(Exception e){
 			log.error(e.getMessage());

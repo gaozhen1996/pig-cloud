@@ -8,8 +8,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.gz.pigvideo.filter.TokenFilter;
-
 
 @SpringBootApplication
 @EnableZuulProxy
@@ -19,10 +17,10 @@ public class GatewayServiceZuulApplication {
 		SpringApplication.run(GatewayServiceZuulApplication.class, args);
 	}
 	
-	@Bean
-	public TokenFilter tokenFilter() {
-		return new TokenFilter();
-	}
+//	@Bean
+//	public TokenFilter tokenFilter() {
+//		return new TokenFilter();
+//	}
 	
 	private CorsConfiguration buildConfig() {  
         CorsConfiguration corsConfiguration = new CorsConfiguration();  
