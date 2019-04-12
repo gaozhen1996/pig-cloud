@@ -138,9 +138,9 @@ public class WormUtil {
         return bos.toByteArray();
     }
 
-//    public static void main(String[] args) {
-//        String url = "https://kuaiyinshi.com/#search-form";
-//        saveVideoFromUrl(url,3,"/Users/gaozhen/Downloads/gzvideo");
+//    public static void main(String[] args) throws IOException {
+//        String url = "https://live.bilibili.com/147?spm_id_from=333.334.b_62696c695f6c697665.12";
+//        System.out.println(getVideoFromHTML(url));
 //    }
 
     /**
