@@ -1,10 +1,14 @@
 package com.gz.pigvideo.config;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -18,6 +22,8 @@ import com.gz.pigvideo.security.MyShiroRealm;
 
 @Configuration
 public class ShiroConfiguration {
+
+	private static Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
 
 	class UserCredentialsMatcher extends SimpleCredentialsMatcher {
 		@Override
@@ -64,6 +70,9 @@ public class ShiroConfiguration {
 	public ShiroFilterFactoryBean shiroFilterFactoryBean() {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager());
+		shiroFilterFactoryBean.setSuccessUrl("/");
+		shiroFilterFactoryBean.setUnauthorizedUrl("/error/403.html");
+		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;
 	}
 
@@ -76,6 +85,7 @@ public class ShiroConfiguration {
 	public SecurityManager securityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		securityManager.setRealm(myShiroRealm());
+		securityManager.setSessionManager(sessionManager());
 		return securityManager;
 	}
 
@@ -85,5 +95,13 @@ public class ShiroConfiguration {
 		aasa.setSecurityManager(securityManager());
 		return new AuthorizationAttributeSourceAdvisor();
 	}
+	
+    @Bean
+    public SessionManager sessionManager() {
+        MySessionManager mySessionManager = new MySessionManager();
+        return mySessionManager;
+    }
+	
+	
 
 }

@@ -33,6 +33,8 @@ public class MyShiroRealm extends AuthorizingRealm{
 	
 	public MyShiroRealm(){
 		setName(REALM_NAME);
+		setAuthenticationCachingEnabled(false);
+		setAuthorizationCachingEnabled(false);
 	}
 	
 	
