@@ -8,7 +8,6 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -85,7 +84,7 @@ public class ShiroConfiguration {
 	public SecurityManager securityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		securityManager.setRealm(myShiroRealm());
-		securityManager.setSessionManager(sessionManager());
+//		securityManager.setSessionManager(sessionManager());
 		return securityManager;
 	}
 
@@ -95,12 +94,6 @@ public class ShiroConfiguration {
 		aasa.setSecurityManager(securityManager());
 		return new AuthorizationAttributeSourceAdvisor();
 	}
-	
-    @Bean
-    public SessionManager sessionManager() {
-        MySessionManager mySessionManager = new MySessionManager();
-        return mySessionManager;
-    }
 	
 	
 

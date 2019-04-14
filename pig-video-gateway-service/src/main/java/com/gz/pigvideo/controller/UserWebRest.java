@@ -48,10 +48,12 @@ public class UserWebRest {
 				userObj.put("name", user.getName());
 				userObj.put("id", user.getUserId());
 				userObj.put("role", user.getRole().getRoleDetail());
+				response.put("Authorization", currentuser.getSession().getId());
 				response.put("data", userObj);
 				response.put("code", 2);
 			}
 		}catch(Exception e){
+			e.printStackTrace();
 			log.error(e.getMessage());
 			response.put("msg","密码或用户名错误");
 			response.put("code", 5);
