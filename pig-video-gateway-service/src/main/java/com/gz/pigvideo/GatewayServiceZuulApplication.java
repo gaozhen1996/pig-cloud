@@ -5,8 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
-import com.gz.pigvideo.filter.TokenFilter;
+import com.gz.pigvideo.filter.MyFilter;
 
 
 
@@ -20,9 +23,28 @@ public class GatewayServiceZuulApplication {
 	}
 	
 	@Bean
-	public TokenFilter tokenFilter() {
-		return new TokenFilter();
+	public MyFilter tokenFilter() {
+		return new MyFilter();
 	}
+	
+	private CorsConfiguration buildConfig() {  
+        CorsConfiguration corsConfiguration = new CorsConfiguration();  
+        corsConfiguration.addAllowedOrigin("*");  
+        corsConfiguration.addAllowedHeader("*");  
+        corsConfiguration.addAllowedMethod("*");  
+        return corsConfiguration;  
+    }  
+      
+    /** 
+     * 跨域过滤器 
+     * @return 
+     */  
+    @Bean  
+    public CorsFilter corsFilter() {  
+        UrlBasedCorsConfigurationSource source= new UrlBasedCorsConfigurationSource();  
+        source.registerCorsConfiguration("/**", buildConfig()); // 4  
+        return new CorsFilter(source);  
+    }  
 
 
 }
