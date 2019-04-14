@@ -48,7 +48,6 @@ public class UserWebRest {
 			userObj.put("name", user.getName());
 			userObj.put("id", user.getUserId());
 			userObj.put("role", user.getRole().getRoleDetail());
-			response.put("Authorization", currentuser.getSession().getId());
 			response.put("data", userObj);
 			response.put("code", 2);
 		}catch(Exception e){
@@ -63,22 +62,18 @@ public class UserWebRest {
 	
 	@RequestMapping("logout")
 	public String logout(){
-		JSONObject return_data=new JSONObject();
 		JSONObject response=new JSONObject();
 		try {
 			Subject currentUser = SecurityUtils.getSubject();
 			if (currentUser.isAuthenticated()) {
 				currentUser.logout();
 			}
-			response.put("res", true);
+			response.put("code", 2);
 		}catch (Exception e) {
-			response.put("res", false);
-			response.put("detail", e.getMessage());
+			response.put("code", 5);
+			response.put("msg", e.getMessage());
 		}
-		return_data.put("response", response);
-		return_data.put("cmd", "logout");
-		return_data.put("type", "response");	
-		return return_data.toJSONString();
+		return response.toJSONString();
 	}
 
 }
