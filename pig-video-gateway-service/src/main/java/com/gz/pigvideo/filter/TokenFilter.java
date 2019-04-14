@@ -1,10 +1,12 @@
 package com.gz.pigvideo.filter;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
+import com.alibaba.fastjson.JSONObject;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 
@@ -29,19 +31,26 @@ public class TokenFilter extends ZuulFilter {
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        String ip = request.getHeader("x-forwarded-for"); 
-        System.out.println("访问用户ip:"+ip);
+        HttpServletResponse response = ctx.getResponse();
+        String origin = request.getHeader("Origin");
+        System.out.println("访问用户ip:"+origin);
         Subject currentUser = SecurityUtils.getSubject();
-        System.out.println(currentUser.isAuthenticated());
         if (currentUser.isAuthenticated()) {
             ctx.setSendZuulResponse(true); //对请求进行路由
             ctx.setResponseStatusCode(200);
             ctx.set("isSuccess", true);
             return null;
         } else {
+            response.setHeader("Access-Control-Allow-Origin", origin);
+            response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+            response.setHeader("Access-Control-Max-Age", "3600");
+            response.setHeader("Access-Control-Allow-Headers", "x-requested-with,Authorization");
+            response.setHeader("Access-Control-Allow-Credentials", "true");
             ctx.setSendZuulResponse(false); //不对其进行路由
-            ctx.setResponseStatusCode(400);
-            ctx.setResponseBody("token is empty");
+            ctx.setResponseStatusCode(200);
+            JSONObject data = new JSONObject();
+            data.put("code",4);
+            ctx.setResponseBody(data.toJSONString());
             ctx.set("isSuccess", false);
             return null;
         }

@@ -20,5 +20,6 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 		log.info("-----------plan service run success-------------");
 	}
-	
+
+
 }

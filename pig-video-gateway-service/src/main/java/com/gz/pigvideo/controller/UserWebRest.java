@@ -33,7 +33,6 @@ public class UserWebRest {
 			Subject currentuser=SecurityUtils.getSubject();
 			if(currentuser.isAuthenticated()){
 				log.info("current is Authenticated!");
-				response.put("code", 2);
 			}else{
 				String userName=request.getString("username");
 				String password=request.getString("password");
@@ -42,16 +41,16 @@ public class UserWebRest {
 				currentuser.login(token);
 				currentuser.getSession().setTimeout(-1001);
 				log.info(userName+" is login!");
-				User user = (User) currentuser.getSession().getAttribute("user");
-				JSONObject userObj = new JSONObject();
-				userObj.put("account", user.getAccount());
-				userObj.put("name", user.getName());
-				userObj.put("id", user.getUserId());
-				userObj.put("role", user.getRole().getRoleDetail());
-				response.put("Authorization", currentuser.getSession().getId());
-				response.put("data", userObj);
-				response.put("code", 2);
 			}
+			User user = (User) currentuser.getSession().getAttribute("user");
+			JSONObject userObj = new JSONObject();
+			userObj.put("account", user.getAccount());
+			userObj.put("name", user.getName());
+			userObj.put("id", user.getUserId());
+			userObj.put("role", user.getRole().getRoleDetail());
+			response.put("Authorization", currentuser.getSession().getId());
+			response.put("data", userObj);
+			response.put("code", 2);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error(e.getMessage());
