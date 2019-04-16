@@ -7,12 +7,14 @@ public class Plan implements java.io.Serializable {
     private Long finishStatus;//完成状态，0未完成，1完成
     private java.util.Date finishDate;//完成时间
     private String planIndex;//位置
+    private Long publicFlag;//公开标识
     private java.util.Date createDate;//创建时间
+    private java.util.Date actualFinishDate;//实际完成时间
     private String content;//计划的内容
     public Plan() {
         super();
     }
-    public Plan(Integer id,Integer uid,Integer planType,Long finishStatus,java.util.Date finishDate,String planIndex,java.util.Date createDate,String content) {
+    public Plan(Integer id,Integer uid,Integer planType,Long finishStatus,java.util.Date finishDate,String planIndex,Long publicFlag,java.util.Date createDate,java.util.Date actualFinishDate,String content) {
         super();
         this.id = id;
         this.uid = uid;
@@ -20,7 +22,9 @@ public class Plan implements java.io.Serializable {
         this.finishStatus = finishStatus;
         this.finishDate = finishDate;
         this.planIndex = planIndex;
+        this.publicFlag = publicFlag;
         this.createDate = createDate;
+        this.actualFinishDate = actualFinishDate;
         this.content = content;
     }
     public Integer getId() {
@@ -71,12 +75,28 @@ public class Plan implements java.io.Serializable {
         this.planIndex = planIndex;
     }
 
+    public Long getPublicFlag() {
+        return this.publicFlag;
+    }
+
+    public void setPublicFlag(Long publicFlag) {
+        this.publicFlag = publicFlag;
+    }
+
     public java.util.Date getCreateDate() {
         return this.createDate;
     }
 
     public void setCreateDate(java.util.Date createDate) {
         this.createDate = createDate;
+    }
+
+    public java.util.Date getActualFinishDate() {
+        return this.actualFinishDate;
+    }
+
+    public void setActualFinishDate(java.util.Date actualFinishDate) {
+        this.actualFinishDate = actualFinishDate;
     }
 
     public String getContent() {
@@ -86,10 +106,5 @@ public class Plan implements java.io.Serializable {
     public void setContent(String content) {
         this.content = content;
     }
-	@Override
-	public String toString() {
-		return "Plan [id=" + id + ", uid=" + uid + ", planType=" + planType + ", finishStatus=" + finishStatus
-				+ ", finishDate=" + finishDate + ", planIndex=" + planIndex + ", createDate=" + createDate
-				+ ", content=" + content + "]";
-	}
+
 }

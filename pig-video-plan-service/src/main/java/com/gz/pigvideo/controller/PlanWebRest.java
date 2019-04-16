@@ -90,7 +90,12 @@ public class PlanWebRest {
 			Plan plan = new Plan();
 			plan.setId(request.getInteger("id"));
 			boolean status = request.getBooleanValue("status");
-			plan.setFinishStatus(status?(long)1:(long)0);
+			if(status) {
+				plan.setFinishStatus((long)1);
+				plan.setActualFinishDate(new Date());
+			}else{
+				plan.setFinishStatus((long)0);
+			}
 			planService.updateNonEmptyPlanById(plan);
 			response.put("code", 2);
 		} catch (Exception e) {
@@ -168,4 +173,26 @@ public class PlanWebRest {
 		}
 		return response;
 	}
+	
+	@RequestMapping("/listByUidAndPaging")
+	public JSONObject listByUidAndPaging(@RequestParam int uid,
+										 @RequestParam int startRow,
+										 @RequestParam int rowSize,
+										 @RequestParam String sel_status,
+										 @RequestParam String sel_word,
+										 @RequestParam String sel_date) {
+		log.info("进入listByUidAndPaging");
+		JSONObject response = new JSONObject();
+		try {
+			JSONObject data = planService.listByUidAndPaging(uid, startRow, rowSize, sel_status, sel_word, sel_date);
+			response.put("data", data);
+			response.put("code", 2);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			response.put("code",5);
+			response.put("msg", e.getMessage());
+		}
+		return response;
+	} 
 }

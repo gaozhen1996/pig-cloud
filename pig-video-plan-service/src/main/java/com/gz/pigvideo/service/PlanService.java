@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.gz.pigvideo.common.Assist;
 import com.gz.pigvideo.common.Assist.WhereRequire;
 import com.gz.pigvideo.domain.Plan;
@@ -61,4 +62,36 @@ public class PlanService {
 	public int deletePlanById(Plan plan) {
 		return planDao.deletePlanById(plan);
 	}
+	
+	public JSONObject listByUidAndPaging(int uid,int startRow,int rowSize,String sel_status, 
+										 String sel_word, String sel_date){
+		JSONObject res = new JSONObject();
+		JSONArray planArr = new JSONArray();
+		Assist assist = new Assist();
+		assist.setOrder(Assist.order("id", false));
+		assist.setRequires(Assist.andEq("uid", uid));
+		assist.setRowSize(rowSize);
+		assist.setStartRow(startRow);
+		//搜索条件
+		if(!sel_status.equals("")) {
+			assist.setRequires(Assist.andEq("finish_status",sel_status));
+		}
+		if(!sel_word.equals("")) {
+			assist.setRequires(Assist.andLike("content", "%"+sel_word+"%"));
+		}
+		if(!sel_date.equals("")) {
+			assist.setRequires(Assist.andEq("create_date",sel_date));
+		}
+		List<Plan> plans = planDao.selectPlan(assist);
+		for (Plan plan : plans) {
+			planArr.add(dtoUtil.plan2Object(plan));
+		}
+		res.put("data",planArr);
+		assist.setStartRow(null);
+		assist.setRowSize(null);
+		long row = planDao.getPlanRowCount(assist);
+		res.put("row",row);
+		return res;
+	}
+	
 }
