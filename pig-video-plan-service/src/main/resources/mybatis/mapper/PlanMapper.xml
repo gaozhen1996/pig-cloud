@@ -135,35 +135,6 @@
         values(#{id},#{uid},#{planType},#{finishStatus},#{finishDate},#{planIndex},#{publicFlag},#{createDate},#{actualFinishDate},#{content})
     </insert>
 
-    <!-- 将Plan中属性值不为null的数据,插入到对应数据库的表中-->
-    <insert id="insertNonEmptyPlan" parameterType="com.gz.pigvideo.domain.Plan">
-        insert into plan
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">id,</if>
-            <if test="uid != null">uid,</if>
-            <if test="planType != null">plan_type,</if>
-            <if test="finishStatus != null">finish_status,</if>
-            <if test="finishDate != null">finish_date,</if>
-            <if test="planIndex != null">plan_index,</if>
-            <if test="publicFlag != null">public_flag,</if>
-            <if test="createDate != null">create_date,</if>
-            <if test="actualFinishDate != null">actual_finish_date,</if>
-            <if test="content != null">content,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null"> #{id},</if>
-            <if test="uid != null"> #{uid},</if>
-            <if test="planType != null"> #{planType},</if>
-            <if test="finishStatus != null"> #{finishStatus},</if>
-            <if test="finishDate != null"> #{finishDate},</if>
-            <if test="planIndex != null"> #{planIndex},</if>
-            <if test="publicFlag != null"> #{publicFlag},</if>
-            <if test="createDate != null"> #{createDate},</if>
-            <if test="actualFinishDate != null"> #{actualFinishDate},</if>
-            <if test="content != null"> #{content},</if>
-        </trim>
-    </insert>
-
     <!-- 将Plan批量插入到对应数据库的表中-->
     <insert id="insertPlanByBatch" parameterType="ArrayList">
         insert into plan(id,uid,plan_type,finish_status,finish_date,plan_index,public_flag,create_date,actual_finish_date,content) values
@@ -303,5 +274,32 @@
 							 #{old.planType},#{old.planIndex});
     </update>
 
-
+    <!-- 将Plan中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptyPlan" useGeneratedKeys="true" keyProperty="id" parameterType="com.gz.pigvideo.domain.Plan">
+        insert into plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="uid != null">uid,</if>
+            <if test="planType != null">plan_type,</if>
+            <if test="finishStatus != null">finish_status,</if>
+            <if test="finishDate != null">finish_date,</if>
+            <if test="planIndex != null">plan_index,</if>
+            <if test="publicFlag != null">public_flag,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="actualFinishDate != null">actual_finish_date,</if>
+            <if test="content != null">content,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id},</if>
+            <if test="uid != null"> #{uid},</if>
+            <if test="planType != null"> #{planType},</if>
+            <if test="finishStatus != null"> #{finishStatus},</if>
+            <if test="finishDate != null"> #{finishDate},</if>
+            <if test="planIndex != null"> #{planIndex},</if>
+            <if test="publicFlag != null"> #{publicFlag},</if>
+            <if test="createDate != null"> #{createDate},</if>
+            <if test="actualFinishDate != null"> #{actualFinishDate},</if>
+            <if test="content != null"> #{content},</if>
+        </trim>
+    </insert>
 </mapper>

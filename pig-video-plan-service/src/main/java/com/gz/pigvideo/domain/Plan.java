@@ -106,5 +106,12 @@ public class Plan implements java.io.Serializable {
     public void setContent(String content) {
         this.content = content;
     }
-
+	@Override
+	public String toString() {
+		return "Plan [id=" + id + ", uid=" + uid + ", planType=" + planType + ", finishStatus=" + finishStatus
+				+ ", finishDate=" + finishDate + ", planIndex=" + planIndex + ", publicFlag=" + publicFlag
+				+ ", createDate=" + createDate + ", actualFinishDate=" + actualFinishDate + ", content=" + content
+				+ "]";
+	}
+    
 }
