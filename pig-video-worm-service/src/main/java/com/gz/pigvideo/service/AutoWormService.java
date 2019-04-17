@@ -11,18 +11,32 @@ import org.springframework.stereotype.Component;
 public class AutoWormService {
     private boolean autoFlag = false;
 
+    private int num = 3;
+    
     @Autowired
     IVideoService videoService;
 
     public void setAutoFlag(boolean autoFlag) {
         this.autoFlag = autoFlag;
     }
+    
+    public boolean getAutoFlag() {
+    	return this.autoFlag;
+    }
+    
+    public int getNum() {
+		return num;
+	}
 
-    @Scheduled(fixedDelay = 1000*60*10)
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+	@Scheduled(fixedDelay = 1000*60*10)
     public void autoWormTask(){
         if (autoFlag){
             String url = "https://kuaiyinshi.com/#search-form";
-            JSONArray urls = WormUtil.getCountVideoURL(url,10);
+            JSONArray urls = WormUtil.getCountVideoURL(url,num);
             videoService.saveVideoURL(urls.toJSONString());
         }
     }
