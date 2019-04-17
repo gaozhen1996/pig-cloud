@@ -32,7 +32,7 @@ public class PlanWebRest {
 	@Autowired
 	private DTOUtil dtoUtil; 
 	
-	@RequestMapping("/getVideoInfoByPage")
+	@RequestMapping("/getPlansGroupType")
 	public JSONObject getPlansGroupType(@RequestParam String today,@RequestParam int uid) {
 		log.info("getPlansGroupType?today="+today+"&uid="+uid);
 		JSONObject returnData = new JSONObject();
