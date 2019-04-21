@@ -13,6 +13,8 @@ public class AutoWormService {
 
     private int num = 3;
     
+    private String url = "https://kuaiyinshi.com/#search-form";
+    
     @Autowired
     IVideoService videoService;
 
@@ -31,11 +33,18 @@ public class AutoWormService {
 	public void setNum(int num) {
 		this.num = num;
 	}
+	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	@Scheduled(fixedDelay = 1000*60*10)
     public void autoWormTask(){
         if (autoFlag){
-            String url = "https://kuaiyinshi.com/#search-form";
             JSONArray urls = WormUtil.getCountVideoURL(url,num);
             videoService.saveVideoURL(urls.toJSONString());
         }

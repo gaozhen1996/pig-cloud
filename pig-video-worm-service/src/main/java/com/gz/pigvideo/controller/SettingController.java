@@ -16,11 +16,14 @@ public class SettingController {
 	private AutoWormService autoWormService;
 
 	@RequestMapping("/setWormInfo")
-	public JSONObject setWormInfo(@RequestParam boolean flag,@RequestParam int num) {
+	public JSONObject setWormInfo(@RequestParam boolean flag,
+							      @RequestParam int num,
+							      @RequestParam String url) {
 		JSONObject response = new JSONObject();
 		try {
 			System.out.println(num+" "+flag);
 			autoWormService.setAutoFlag(flag);
+			autoWormService.setUrl(url);
 			if(num>0) {
 				autoWormService.setNum(num);
 			}
@@ -38,6 +41,7 @@ public class SettingController {
         JSONObject response = new JSONObject();
         try {
         	JSONObject data = new JSONObject();
+        	data.put("url",autoWormService.getUrl());
         	data.put("autoFlag", autoWormService.getAutoFlag());
         	data.put("num", autoWormService.getNum());
             response.put("data", data);

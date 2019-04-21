@@ -64,8 +64,10 @@ public class WormUtil {
         webClient.close();
         // Jsoup解析处理
         Document doc = Jsoup.parse(pageAsXml, url);
+        System.out.println(doc);
         // 获取所有视频地址
-        Elements video = doc.select("a[href$=.mp4]");
+        Elements video = doc.select("source");
+        System.out.println("----"+video);
         String videoTitle = video.attr("download");
         String videoUrl = "http:"+video.attr("href");
         boolean flag = new UrlResource(videoUrl).exists();
@@ -139,7 +141,7 @@ public class WormUtil {
     }
 
 //    public static void main(String[] args) throws IOException {
-//        String url = "https://live.bilibili.com/147?spm_id_from=333.334.b_62696c695f6c697665.12";
+//        String url = "https://h5.kuaiyinshi.com/";
 //        System.out.println(getVideoFromHTML(url));
 //    }
 
