@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.gz.pigvideo.remote.IAuthService;
 import com.gz.pigvideo.service.AutoWormService;
 
 @RestController
@@ -15,13 +16,16 @@ public class SettingController {
 	@Autowired
 	private AutoWormService autoWormService;
 
+    @Autowired
+    private IAuthService authService;
+	
 	@RequestMapping("/setWormInfo")
 	public JSONObject setWormInfo(@RequestParam boolean flag,
 							      @RequestParam int num,
 							      @RequestParam String url) {
 		JSONObject response = new JSONObject();
 		try {
-			System.out.println(num+" "+flag);
+			System.out.println(authService.isAuthenticated());
 			autoWormService.setAutoFlag(flag);
 			autoWormService.setUrl(url);
 			if(num>0) {
@@ -29,6 +33,7 @@ public class SettingController {
 			}
 			response.put("code", 2);
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.put("code", 5);
 			response.put("msg", e.getMessage());
 		}
