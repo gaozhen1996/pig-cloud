@@ -6,7 +6,6 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,7 +44,6 @@ public class UserWebRest {
 				userObj.put("name", user.getName());
 				userObj.put("id", user.getUserId());
 				userObj.put("role", user.getRole().getRoleDetail());
-				userObj.put("menu", user.getRole().getMenu());
 				response.put("data", userObj);
 				response.put("token", JWTUtil.sign(username, password));
 				response.put("code", 2);
@@ -62,15 +60,24 @@ public class UserWebRest {
 	}
 	
 	
-	@RequestMapping("logout")
-	public String logout(){
+	@RequestMapping("getMenuByAccount")
+	public String getMenuByAccount(@RequestBody String reqstr){
 		JSONObject response=new JSONObject();
 		try {
 			Subject currentUser = SecurityUtils.getSubject();
+			JSONObject request=JSONObject.parseObject(reqstr);
 			if (currentUser.isAuthenticated()) {
-				currentUser.logout();
+				String username=request.getString("username");
+				User user = userService.getUserByAccount(username);
+				if(user!=null) {
+					response.put("data", user.getRole().getMenu());
+					response.put("code", 2);
+				}else {
+					response.put("code", 4);
+				}
+			}else {
+				response.put("code", 4);
 			}
-			response.put("code", 2);
 		}catch (Exception e) {
 			response.put("code", 5);
 			response.put("msg", e.getMessage());
@@ -79,22 +86,4 @@ public class UserWebRest {
 	}
 
 	
-    @GetMapping("article")
-    public JSONObject article() {
-    	JSONObject response = new JSONObject();
-    	try {
-    		Subject subject = SecurityUtils.getSubject();
-    		if (subject.isAuthenticated()) {
-                response.put("code", 200);
-                response.put("msg", "You are already logged in");
-            }else {
-            	 response.put("code", 200);
-                 response.put("msg", "You are guest");
-            }
-		} catch (Exception e) {
-			response.put("code", 200);
-            response.put("msg", e.getMessage());
-		}
-    	return response;
-    }
 }

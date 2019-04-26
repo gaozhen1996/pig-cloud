@@ -67,7 +67,6 @@ public class WormUtil {
         // 获取所有视频地址
         Elements video = doc.select("a[href$=.mp4]");
         String videoTitle = video.attr("download");
-        System.out.println(doc);
         if(video.attr("href").length()>0) {
             String videoUrl = "http:"+video.attr("href");
             boolean flag = new UrlResource(videoUrl).exists();

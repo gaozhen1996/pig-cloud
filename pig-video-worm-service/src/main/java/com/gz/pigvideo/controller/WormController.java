@@ -20,11 +20,10 @@ public class WormController {
     public String worm(@PathVariable("count") int count) {
         String url = "https://kuaiyinshi.com/#search-form";
         JSONArray urls = WormUtil.getCountVideoURL(url,count);
-        System.out.println(urls.toJSONString());
         String res_data = videoService.saveVideoURL(urls.toJSONString());
         JSONObject res_obj = JSONObject.parseObject(res_data);
         if(res_obj.getBoolean("res") ==true){
-            return "成功爬取"+count+"个视频资源！";
+            return "成功爬取"+count+"个视频资源\n"+urls.toJSONString();
         }else{
             return "爬去视频失败！";
         }
