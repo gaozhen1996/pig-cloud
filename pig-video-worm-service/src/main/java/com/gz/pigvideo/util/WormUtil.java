@@ -58,7 +58,7 @@ public class WormUtil {
         webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
         webClient.getOptions().setTimeout(10 * 1000);                   // 设置连接超时时间
         HtmlPage page = webClient.getPage(url);
-        webClient.waitForBackgroundJavaScript(1 * 1000);               // 等待js后台执行
+        webClient.waitForBackgroundJavaScript(5 * 1000);               // 等待js后台执行
         String pageAsXml = page.asXml();
         //关闭webclient
         webClient.close();
@@ -67,14 +67,20 @@ public class WormUtil {
         // 获取所有视频地址
         Elements video = doc.select("a[href$=.mp4]");
         String videoTitle = video.attr("download");
-        String videoUrl = "http:"+video.attr("href");
-        boolean flag = new UrlResource(videoUrl).exists();
-        if (flag){
-            res.put("videoTitle", videoTitle);
-            res.put("videoUrl",videoUrl);
-        }else{
+        System.out.println(doc);
+        if(video.attr("href").length()>0) {
+            String videoUrl = "http:"+video.attr("href");
+            boolean flag = new UrlResource(videoUrl).exists();
+            if (flag){
+                res.put("videoTitle", videoTitle);
+                res.put("videoUrl",videoUrl);
+            }else{
+                res.put("videoUrl",null);
+                res.put("msg","视频连接失效");
+            }
+        }else {
             res.put("videoUrl",null);
-            res.put("msg","视频连接失效");
+            res.put("msg","video url is null");
         }
         return res;
     }
@@ -139,7 +145,7 @@ public class WormUtil {
     }
 
 //    public static void main(String[] args) throws IOException {
-//        String url = "https://h5.kuaiyinshi.com/";
+//        String url = "https://kuaiyinshi.com/#search-form";
 //        System.out.println(getVideoFromHTML(url));
 //    }
 
