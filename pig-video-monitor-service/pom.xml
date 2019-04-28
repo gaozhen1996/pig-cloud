@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.gz</groupId>
-	<artifactId>pig-video-eureka</artifactId>
+	<artifactId>pig-video-monitor-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>pig-video-eureka</name>
-	<description>pig-video-eureka</description>
+	<name>pig-video-monitor-service</name>
+	<description>pig-video monitor-service</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -28,11 +28,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka-server</artifactId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
 		</dependency>
         <dependency>
             <groupId>de.codecentric</groupId>
@@ -59,6 +55,7 @@
 	</dependencyManagement>
 
 	<build>
+		<finalName>monitor-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
