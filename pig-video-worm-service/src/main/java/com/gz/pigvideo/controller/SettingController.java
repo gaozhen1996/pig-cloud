@@ -25,13 +25,16 @@ public class SettingController {
 							      @RequestParam String url) {
 		JSONObject response = new JSONObject();
 		try {
-			System.out.println(authService.isAuthenticated());
-			autoWormService.setAutoFlag(flag);
-			autoWormService.setUrl(url);
-			if(num>0) {
-				autoWormService.setNum(num);
+			if(authService.isPermitted("wormInfo:update")) {
+				autoWormService.setAutoFlag(flag);
+				autoWormService.setUrl(url);
+				if(num>0) {
+					autoWormService.setNum(num);
+				}
+				response.put("code", 2);
+			}else {
+				response.put("code", 4);
 			}
-			response.put("code", 2);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.put("code", 5);
@@ -45,12 +48,16 @@ public class SettingController {
     public JSONObject getWormInfo() {
         JSONObject response = new JSONObject();
         try {
-        	JSONObject data = new JSONObject();
-        	data.put("url",autoWormService.getUrl());
-        	data.put("autoFlag", autoWormService.getAutoFlag());
-        	data.put("num", autoWormService.getNum());
-            response.put("data", data);
-        	response.put("code", 2);
+        	if(authService.isPermitted("wormInfo:select")) {
+            	JSONObject data = new JSONObject();
+            	data.put("url",autoWormService.getUrl());
+            	data.put("autoFlag", autoWormService.getAutoFlag());
+            	data.put("num", autoWormService.getNum());
+                response.put("data", data);
+            	response.put("code", 2);
+        	}else {
+        		response.put("code", 4);
+        	}
 		} catch (Exception e) {
 			response.put("code", 5);
 			response.put("msg", e.getMessage());

@@ -16,10 +16,13 @@ public class FeignConfig implements RequestInterceptor {
 	@Override
 	public void apply(RequestTemplate template) {
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = attributes.getRequest();
-		String authorization = request.getHeader("Authorization");
-		if(authorization != null) {
-			template.header("Authorization", authorization);
+		if(attributes!=null) {
+			HttpServletRequest request = attributes.getRequest();
+			String authorization = request.getHeader("Authorization");
+			if(authorization != null) {
+				template.header("Authorization", authorization);
+			}
 		}
+
 	}
 }
