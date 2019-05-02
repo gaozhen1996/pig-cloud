@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.gz.pigvideo.common.HTTPTool;
 import com.gz.pigvideo.common.JWTUtil;
 import com.gz.pigvideo.domain.Role;
 import com.gz.pigvideo.domain.User;
@@ -52,8 +53,10 @@ public class UserWebRest {
 				JSONObject userObj = new JSONObject();
 				userObj.put("account", user.getAccount());
 				userObj.put("name", user.getName());
+				userObj.put("sex", user.getSex());
 				userObj.put("id", user.getUserId());
 				userObj.put("role", user.getRole().getRoleDetail());
+				userObj.put("logo", user.getPhoto());
 				response.put("data", userObj);
 				response.put("token", JWTUtil.sign(username, password));
 				response.put("code", 2);
@@ -74,19 +77,14 @@ public class UserWebRest {
 	public String getMenuByAccount(@RequestBody String reqstr){
 		JSONObject response=new JSONObject();
 		try {
-			Subject currentUser = SecurityUtils.getSubject();
 			JSONObject request=JSONObject.parseObject(reqstr);
-			if (currentUser.isAuthenticated()) {
-				String username=request.getString("username");
-				User user = userService.getUserByAccount(username);
-				if(user!=null) {
-					response.put("data", user.getRole().getMenu());
-					response.put("code", 2);
-				}else {
-					response.put("code", 4);
-				}
+			String username=request.getString("username");
+			User user = userService.getUserByAccount(username);
+			if(user!=null) {
+				response.put("data", user.getRole().getMenu());
+				response.put("code", 2);
 			}else {
-				response.put("code", 4);
+				response.put("code", 5);
 			}
 		}catch (Exception e) {
 			response.put("code", 5);
@@ -153,5 +151,56 @@ public class UserWebRest {
 		return response;		
 	}
 	
+	@RequestMapping("updateUserById")
+	public JSONObject updateUserById(@RequestBody String reqstr) {
+		log.info(reqstr);
+		JSONObject response=new JSONObject();
+		try {
+			Subject currentUser = SecurityUtils.getSubject();
+			if(currentUser.isPermitted("user:udpate")) {
+				JSONObject request=JSONObject.parseObject(reqstr);
+				User user = new User();
+				long userId = request.getLong("userId");
+				user.setUserId(userId);
+				user.setSex(request.getInteger("sex"));
+				user.setName(request.getString("name"));
+				String logo = request.getString("logo");
+				//存储logo
+				if(!logo.contains("http") && !logo.startsWith("img/")) {
+					//去除无用部分
+					String[] tlogo = logo.split(",");
+					if(tlogo.length>1) {
+						logo = tlogo[1];
+					}else {
+						throw new Exception("图片格式不支持");
+					}
+					JSONObject para = new JSONObject();
+					para.put("base64str", logo);
+					para.put("goalFileName",userId+"-"+System.currentTimeMillis()+".png");
+					JSONObject temp = HTTPTool.post(para, "http://47.94.131.201:10000/upload/saveBase64Img");
+					if(temp==null || temp.getIntValue("code")!=2) {
+						throw new Exception("图片存储失败");
+					}
+					logo = temp.getString("data");
+					user.setPhoto(logo);
+				}
+				int effect = userService.updateNonEmptyUserById(user);
+				if(effect==1) {
+					response.put("code", 2);
+				}else {
+					response.put("code", 5);
+					response.put("msg","亲，修改用户错误了，请联系管理员！");
+				}
+			}else {
+				response.put("msg","亲，权限不足哟!");
+				response.put("code", 4);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			response.put("code", 5);
+			response.put("msg",e.getMessage());
+		}
+		return response;		
+	}
 		
 }
