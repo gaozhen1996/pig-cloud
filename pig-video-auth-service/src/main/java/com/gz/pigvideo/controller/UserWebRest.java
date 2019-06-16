@@ -228,4 +228,22 @@ public class UserWebRest {
 		}
 		return response;
 	}
+	
+	@RequestMapping("currentInfo")
+	public JSONObject currentInfo(@RequestBody String reqstr) {
+		JSONObject response = new JSONObject();
+		try {
+			JSONObject request = JSONObject.parseObject(reqstr);
+			log.info("当前用户信息开始");
+			log.info("account:"+request.getString("account"));
+			log.info("当前用户信息结束");
+			response.put("code", 2);
+		} catch (Exception e) {
+			response.put("code", 5);
+			response.put("msg", e.getMessage());
+		}
+		return response;
+	}
+	
+	
 }

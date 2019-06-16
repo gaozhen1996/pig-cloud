@@ -6,5 +6,6 @@
 	<mappers>
 		<mapper resource="mybatis/mapper/PlanMapper.xml" />
 		<mapper resource="mybatis/mapper/NoteMapper.xml" />
+		<mapper resource="mybatis/mapper/ChortcutMapper.xml" />
 	</mappers>
 </configuration>
