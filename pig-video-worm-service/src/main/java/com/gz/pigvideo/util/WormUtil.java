@@ -43,7 +43,7 @@ public class WormUtil {
      * @return
      * @throws IOException
      */
-    public static JSONObject getVideoFromHTML(String url) throws IOException {
+    public JSONObject getVideoFromHTML(String url) throws IOException {
         JSONObject res = new JSONObject();
 
         LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log","org.apache.commons.logging.impl.NoOpLog");
@@ -92,7 +92,7 @@ public class WormUtil {
      * @param savePath
      * @throws IOException
      */
-    public static boolean downLoadVideoFromUrl(String urlStr, String fileName, String savePath) throws IOException {
+    public  boolean downLoadVideoFromUrl(String urlStr, String fileName, String savePath) throws IOException {
         boolean res = false;
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -132,7 +132,7 @@ public class WormUtil {
      * @return
      * @throws IOException
      */
-    private static byte[] readInputStream(InputStream inputStream) throws IOException {
+    private  byte[] readInputStream(InputStream inputStream) throws IOException {
         byte[] buffer = new byte[1024];
         int len = 0;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -143,10 +143,6 @@ public class WormUtil {
         return bos.toByteArray();
     }
 
-//    public static void main(String[] args) throws IOException {
-//        String url = "https://kuaiyinshi.com/#search-form";
-//        System.out.println(getVideoFromHTML(url));
-//    }
 
     /**
      * 通过URL下载指定数量的视频
@@ -154,14 +150,14 @@ public class WormUtil {
      * @param count  下载视频的数量
      * @param savePath
      */
-    public static void saveVideoFromUrl(String url,int count,String savePath){
+    public  void saveVideoFromUrl(String url,int count,String savePath){
         JSONObject videoInfo=null;
         String videoTitle = null;
         String videoUrl = null;
 
         for (int i = 0; i < count; i++) {
             try {
-                videoInfo = WormUtil.getVideoFromHTML(url);
+                videoInfo = this.getVideoFromHTML(url);
                 if (videoInfo!=null && videoInfo.get("videoTitle")!=null){
                     videoTitle = videoInfo.get("videoTitle") + ".mp4";
                     videoUrl = (String)videoInfo.get("videoUrl");
@@ -188,11 +184,11 @@ public class WormUtil {
         }
     }
 
-    public static JSONArray getCountVideoURL(String url, int count) {
+    public synchronized JSONArray getCountVideoURL(String url, int count) {
         JSONArray jsonArray = new JSONArray();
         try{
             for(int i=0;i<count;i++){
-                JSONObject obj = WormUtil.getVideoFromHTML(url);
+                JSONObject obj = this.getVideoFromHTML(url);
                 if(obj!=null & obj.get("videoUrl")!=null){
                     jsonArray.add(obj);
                 }

@@ -19,7 +19,7 @@ public class WormController {
     @RequestMapping("/worm/{count}")
     public String worm(@PathVariable("count") int count) {
         String url = "https://kuaiyinshi.com/#search-form";
-        JSONArray urls = WormUtil.getCountVideoURL(url,count);
+        JSONArray urls = new WormUtil().getCountVideoURL(url,count);
         String res_data = videoService.saveVideoURL(urls.toJSONString());
         JSONObject res_obj = JSONObject.parseObject(res_data);
         if(res_obj.getBoolean("res") ==true){
