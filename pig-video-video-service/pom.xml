@@ -52,12 +52,10 @@
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
 
-		<!-- thymeleaf 动态web渲染 -->
 		<dependency>
-			<groupId>org.thymeleaf</groupId>
-			<artifactId>thymeleaf-spring4</artifactId>
-			<!-- <version>${thymeleaf.version}</version> -->
-			<!-- <scope>compile</scope> -->
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.18</version>
 		</dependency>
 
 		<!-- 测试 -->
