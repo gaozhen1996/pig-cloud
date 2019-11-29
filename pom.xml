@@ -10,9 +10,11 @@
 	<modules>
 		<module>pig-video-eureka</module>
 		<module>pig-video-video-service</module>
-		<module>pig-video-warm-service</module>
+		<module>pig-video-worm-service</module>
 		<module>pig-video-gateway-service</module>
 		<module>pig-video-plan-service</module>
+		<module>pig-video-auth-service</module>
+		<module>pig-video-monitor-service</module>
 	</modules>
 
 	<packaging>pom</packaging>
