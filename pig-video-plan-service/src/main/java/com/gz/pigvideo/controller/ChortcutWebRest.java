@@ -1,6 +1,7 @@
 package com.gz.pigvideo.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.gz.pigvideo.api.CommonResult;
 import com.gz.pigvideo.domain.Chortcut;
 import com.gz.pigvideo.service.ChortcutService;
 
@@ -24,19 +26,9 @@ public class ChortcutWebRest {
 	private ChortcutService chortcutService;
 	
 	@RequestMapping("/selectSystemChortcutByUid")
-	public JSONObject selectSystemChortcutByUid(@RequestParam int uid) {
-		
-		log.info("selectSystemChortcutByUid?uid="+uid);
-		JSONObject returnData = new JSONObject();
-		try {
-			returnData.put("code", 2);
-			returnData.put("data", chortcutService.selectSystemChortcutByUid(uid));
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			returnData.put("code",5);
-			returnData.put("msg",e.getMessage());
-		}
-		return returnData;
+	public CommonResult<List<Chortcut>> selectSystemChortcutByUid(@RequestParam int uid) {
+		List<Chortcut> chortcuts = chortcutService.selectSystemChortcutByUid(uid);
+		return new CommonResult<List<Chortcut>>(chortcuts);
 	}
 	
 	@RequestMapping("/selectChortcutByUid")
