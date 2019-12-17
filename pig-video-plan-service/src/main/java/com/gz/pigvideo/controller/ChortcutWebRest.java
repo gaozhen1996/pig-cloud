@@ -32,18 +32,9 @@ public class ChortcutWebRest {
 	}
 	
 	@RequestMapping("/selectChortcutByUid")
-	public JSONObject selectChortcutByUid(@RequestParam int uid) {
-		log.info("selectChortcutByUid?uid="+uid);
-		JSONObject returnData = new JSONObject();
-		try {
-			returnData.put("code", 2);
-			returnData.put("data", chortcutService.selectChortcutByUid(uid));
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			returnData.put("code",5);
-			returnData.put("msg",e.getMessage());
-		}
-		return returnData;
+	public CommonResult<List<Chortcut>> selectChortcutByUid(@RequestParam int uid) {
+		List<Chortcut> chortcuts = chortcutService.selectChortcutByUid(uid);
+		return new CommonResult<List<Chortcut>>(chortcuts);
 	}
 	
 	@RequestMapping("/addChortcut")

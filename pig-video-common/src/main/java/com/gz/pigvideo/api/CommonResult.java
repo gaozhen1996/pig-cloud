@@ -17,6 +17,7 @@ public class CommonResult<T> implements Serializable{
 
 	public CommonResult(T data) {
 		super();
+		this.code = ResultCode.SUCCESS.getCode();
 		this.data = data;
 	}
 
