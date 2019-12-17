@@ -25,6 +25,7 @@ public class ChortcutWebRest {
 	
 	@RequestMapping("/selectSystemChortcutByUid")
 	public JSONObject selectSystemChortcutByUid(@RequestParam int uid) {
+		
 		log.info("selectSystemChortcutByUid?uid="+uid);
 		JSONObject returnData = new JSONObject();
 		try {
