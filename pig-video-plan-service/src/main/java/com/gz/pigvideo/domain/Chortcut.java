@@ -86,5 +86,11 @@ public class Chortcut implements java.io.Serializable {
     public void setRelation(Integer relation) {
         this.relation = relation;
     }
+	@Override
+	public String toString() {
+		return "Chortcut [id=" + id + ", uid=" + uid + ", imgUrl=" + imgUrl + ", name=" + name + ", index=" + index
+				+ ", addDate=" + addDate + ", url=" + url + ", relation=" + relation + "]";
+	}
 
+    
 }

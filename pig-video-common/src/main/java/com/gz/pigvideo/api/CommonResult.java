@@ -27,7 +27,38 @@ public class CommonResult<T> implements Serializable{
 		this.code = ResultCode.FAILED.getCode();
 	}
 
+	public CommonResult(int code, String msg,T data) {
+		super();
+		this.msg = msg;
+		this.code = code;
+		this.data = data;
+	}
+
+
+	public static <T> CommonResult<T> success() {
+        return new CommonResult<T>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
+    }
+
+	public static <T> CommonResult<T> success(T data) {
+        return new CommonResult<T>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
+    }
+    
+	public static <T> CommonResult<T> success(T data, String message) {
+        return new CommonResult<T>(ResultCode.SUCCESS.getCode(), message, data);
+    }
+ 
+    public static <T> CommonResult<T> failed() {
+        return new CommonResult<T>(ResultCode.FAILED.getCode(), ResultCode.FAILED.name(), null);
+    }
 	
+    public static <T> CommonResult<T> failed(String message) {
+        return new CommonResult<T>(ResultCode.FAILED.getCode(), message, null);
+    }
+
+    public static <T> CommonResult<T> failed(ResultCode errorCode) {
+        return new CommonResult<T>(errorCode.getCode(), errorCode.getMessage(), null);
+    }
+    
 	public String getMsg() {
 		return msg;
 	}
