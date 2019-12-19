@@ -4,7 +4,7 @@ public class Plan implements java.io.Serializable {
     private Integer id;//主键
     private Integer uid;//用户id
     private Integer planType;//计划类型，分为四类
-    private Long finishStatus;//完成状态，0未完成，1完成
+    private Long finishStatus = 0L;//完成状态，0未完成，1完成
     private java.util.Date finishDate;//完成时间
     private String planIndex;//位置
     private Long publicFlag;//公开标识
