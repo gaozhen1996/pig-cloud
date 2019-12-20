@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.gz.pigvideo.api.CommonResult;
 import com.gz.pigvideo.domain.Note;
 import com.gz.pigvideo.service.NoteService;
 
@@ -24,50 +25,18 @@ public class NoteWebRest {
 	private NoteService noteService;
 
 	@RequestMapping("/listNoteByUidAndPaging")
-	public JSONObject listNoteByUidAndPaging(@RequestParam int uid,
+	public CommonResult<JSONObject> listNoteByUidAndPaging(@RequestParam int uid,
 									   @RequestParam int startRow,
 									   @RequestParam int rowSize) {
-		log.info("listNoteByUidAndPaging?");
-		JSONObject response = new JSONObject();
-		try {
-			JSONObject data = noteService.listNoteByUidAndPaging(uid, startRow, rowSize);
-			response.put("data", data);
-			response.put("code", 2);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			response.put("code",5);
-			response.put("msg",e.getMessage());
-		}
-		return response;
+		JSONObject data = noteService.listNoteByUidAndPaging(uid, startRow, rowSize);
+		return CommonResult.success(data);
 	}	
 	
 	@RequestMapping("/addNote")
-	public JSONObject addNote(@RequestBody String reqstr) {
-		log.info(reqstr);
-		JSONObject response = new JSONObject();
-		try {
-			JSONObject request = JSONObject.parseObject(reqstr);
-			Note note = new Note();
-			note.setContent(request.get("content"));
-			note.setCreateTime(new Date());
-			note.setFromid(request.getInteger("fromid"));
-			note.setTitle(request.getString("title"));
-			note.setType("note");
-			note.setUid(request.getInteger("uid"));
-			JSONObject res = noteService.insertNonEmptyNote(note);
-			if(res==null) {
-				response.put("code",5);
-				response.put("msg","未知错误");
-			}else {
-				response.put("data", res);
-				response.put("code", 2);
-			}
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			response.put("code",5);
-			response.put("msg", e.getMessage());
-		}
-		return response;
+	public CommonResult<JSONObject> addNote(@RequestBody Note para) {
+		para.setCreateTime(new Date());
+		para.setType("note");
+		return CommonResult.success(noteService.insertNonEmptyNote(para));
 	}
 	
 	@RequestMapping("/updateNoteById")
@@ -98,26 +67,8 @@ public class NoteWebRest {
 	}	
 
 	@RequestMapping("/deleteNoteById")
-	public JSONObject deleteNoteById(@RequestBody String reqstr) {
-		log.info(reqstr);
-		JSONObject response = new JSONObject();
-		try {
-			JSONObject request = JSONObject.parseObject(reqstr);
-			int id = request.getInteger("id");
-			int res = noteService.deleteNoteById(id);
-			if(res==1) {
-				response.put("data", res);
-				response.put("code", 2);
-			}else {
-				response.put("code",5);
-				response.put("msg","未知错误");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.put("code",5);
-			response.put("msg", e.getMessage());
-		}
-		return response;
+	public CommonResult<Integer> deleteNoteById(@RequestBody Note para) {
+		return CommonResult.success(noteService.deleteNoteById(para.getId()));
 	}		
 	
 }
