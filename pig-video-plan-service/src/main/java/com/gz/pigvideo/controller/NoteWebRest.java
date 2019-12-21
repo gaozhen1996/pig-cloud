@@ -40,30 +40,32 @@ public class NoteWebRest {
 	}
 	
 	@RequestMapping("/updateNoteById")
-	public JSONObject updateNoteById(@RequestBody String reqstr) {
-		log.info(reqstr);
-		JSONObject response = new JSONObject();
-		try {
-			JSONObject request = JSONObject.parseObject(reqstr);
-			Note note = new Note();
-			note.setId(request.getInteger("id"));
-			note.setTitle(request.getString("title"));
-			note.setContent(request.get("content"));
-			note.setUpdateTime(new Date());
-			int res = noteService.updateNonEmptyNoteById(note);
-			if(res==1) {
-				response.put("data", res);
-				response.put("code", 2);
-			}else {
-				response.put("code",5);
-				response.put("msg","未知错误");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.put("code",5);
-			response.put("msg", e.getMessage());
-		}
-		return response;
+	public CommonResult<Integer> updateNoteById(@RequestBody Note para) {
+		para.setUpdateTime(new Date());
+		return CommonResult.success(noteService.updateNonEmptyNoteById(para));
+//		log.info(reqstr);
+//		JSONObject response = new JSONObject();
+//		try {
+//			JSONObject request = JSONObject.parseObject(reqstr);
+//			Note note = new Note();
+//			note.setId(request.getInteger("id"));
+//			note.setTitle(request.getString("title"));
+//			note.setContent(request.get("content"));
+//			note.setUpdateTime(new Date());
+//			int res = noteService.updateNonEmptyNoteById(note);
+//			if(res==1) {
+//				response.put("data", res);
+//				response.put("code", 2);
+//			}else {
+//				response.put("code",5);
+//				response.put("msg","未知错误");
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			response.put("code",5);
+//			response.put("msg", e.getMessage());
+//		}
+//		return response;
 	}	
 
 	@RequestMapping("/deleteNoteById")

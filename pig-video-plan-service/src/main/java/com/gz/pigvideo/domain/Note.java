@@ -87,4 +87,17 @@ public class Note implements java.io.Serializable {
         this.content = content;
     }
 
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", uid=" + uid +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", type='" + type + '\'' +
+                ", title='" + title + '\'' +
+                ", fromid=" + fromid +
+                ", content=" + content +
+                '}';
+    }
 }

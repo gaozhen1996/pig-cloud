@@ -12,12 +12,12 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 @EnableDiscoveryClient
 @EnableFeignClients
 @ServletComponentScan
-public class Application {
+public class PlanApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(Application.class);
+	private static final Logger log = LoggerFactory.getLogger(PlanApplication.class);
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(PlanApplication.class, args);
 		log.info("-----------plan service run success-------------");
 	}
 
