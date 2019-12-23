@@ -2,8 +2,6 @@ package com.gz.pigvideo.controller;
 
 import java.util.Date;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +16,6 @@ import com.gz.pigvideo.service.NoteService;
 @RestController
 @RequestMapping("/web/rest/note")
 public class NoteWebRest {
-	
-	private static final Logger log = LoggerFactory.getLogger(NoteWebRest.class);
 	
 	@Autowired
 	private NoteService noteService;
@@ -43,29 +39,6 @@ public class NoteWebRest {
 	public CommonResult<Integer> updateNoteById(@RequestBody Note para) {
 		para.setUpdateTime(new Date());
 		return CommonResult.success(noteService.updateNonEmptyNoteById(para));
-//		log.info(reqstr);
-//		JSONObject response = new JSONObject();
-//		try {
-//			JSONObject request = JSONObject.parseObject(reqstr);
-//			Note note = new Note();
-//			note.setId(request.getInteger("id"));
-//			note.setTitle(request.getString("title"));
-//			note.setContent(request.get("content"));
-//			note.setUpdateTime(new Date());
-//			int res = noteService.updateNonEmptyNoteById(note);
-//			if(res==1) {
-//				response.put("data", res);
-//				response.put("code", 2);
-//			}else {
-//				response.put("code",5);
-//				response.put("msg","未知错误");
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			response.put("code",5);
-//			response.put("msg", e.getMessage());
-//		}
-//		return response;
 	}	
 
 	@RequestMapping("/deleteNoteById")

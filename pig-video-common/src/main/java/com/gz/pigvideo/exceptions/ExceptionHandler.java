@@ -15,7 +15,15 @@ public class ExceptionHandler {
         else if (e instanceof UnloginException ) {
             result.setMsg(ResultCode.UNAUTHORIZED.getMessage());
             result.setCode(ResultCode.UNAUTHORIZED.getCode());
-        }
+        } 
+        else if (e instanceof UserNotExistsException ) {
+            result.setMsg(ResultCode.USERNOTEXISTS.getMessage());
+            result.setCode(ResultCode.USERNOTEXISTS.getCode());
+        } 
+        else if (e instanceof PasswordErrorException ) {
+            result.setMsg(ResultCode.PASSWORDERROR.getMessage());
+            result.setCode(ResultCode.PASSWORDERROR.getCode());
+        }          
         else {
             result.setMsg(e.toString());
             result.setCode(ResultCode.FAILED.getCode());
