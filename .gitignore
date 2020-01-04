@@ -4,3 +4,6 @@
 /**/.project
 /**/.classpath
 /**/app*
+/**/.idea/*
+.DS_Store
+/**/*.springBeans
