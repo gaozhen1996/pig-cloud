@@ -67,7 +67,7 @@
 			<groupId>com.gz</groupId>
 			<artifactId>pig-video-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>	
 
 	</dependencies>

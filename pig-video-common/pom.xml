@@ -5,4 +5,16 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>common</name>
   <description>公用的方法</description>
+  
+  <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
