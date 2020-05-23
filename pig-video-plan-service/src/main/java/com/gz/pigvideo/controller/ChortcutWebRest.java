@@ -1,5 +1,6 @@
 package com.gz.pigvideo.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class ChortcutWebRest {
 	
 	@RequestMapping("/addChortcut")
 	public CommonResult<Integer> addChortcut(@RequestBody Chortcut para) {
+		para.setAddDate(new Date());
 		if(chortcutService.insertNonEmptyChortcut(para)==1) {
 			return CommonResult.success();
 		}

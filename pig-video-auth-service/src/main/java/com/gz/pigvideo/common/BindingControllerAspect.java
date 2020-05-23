@@ -29,7 +29,7 @@ public class BindingControllerAspect {
         try {
             result = (CommonResult<?>) joinPoint.proceed();
         } catch (Throwable e) {
-        	log.equals(e.getMessage());
+        	log.error(e.getMessage());
         	result = ExceptionHandler.handlerException(e);
         }
         return result;

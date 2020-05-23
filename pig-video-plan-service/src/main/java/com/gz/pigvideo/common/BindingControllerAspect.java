@@ -23,13 +23,13 @@ public class BindingControllerAspect {
 	public void BindingController() {
 	}
 	
-    @Around("BindingController()")
+	@Around("BindingController()")
     public Object doAround(ProceedingJoinPoint joinPoint){
         CommonResult<?> result;
         try {
             result = (CommonResult<?>) joinPoint.proceed();
         } catch (Throwable e) {
-        	log.equals(e.getMessage());
+        	log.error(e.getMessage());
         	result = ExceptionHandler.handlerException(e);
         }
         return result;
