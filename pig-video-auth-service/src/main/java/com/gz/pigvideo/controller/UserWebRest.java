@@ -4,8 +4,6 @@ import java.util.Date;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,18 +17,21 @@ import com.gz.pigvideo.common.HTTPTool;
 import com.gz.pigvideo.common.JWTUtil;
 import com.gz.pigvideo.domain.Role;
 import com.gz.pigvideo.domain.User;
+import com.gz.pigvideo.domain.UserActivity;
 import com.gz.pigvideo.exceptions.PasswordErrorException;
 import com.gz.pigvideo.exceptions.UserNotExistsException;
+import com.gz.pigvideo.repository.UserActivityDao;
 import com.gz.pigvideo.service.UserService;
 
 @RestController
 @RequestMapping("/userWebRest/")
 public class UserWebRest {
 
-	private static final Logger log = LoggerFactory.getLogger(UserWebRest.class);
-
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserActivityDao userActivityService;
 
 	/**
 	 * 用户登录
@@ -70,7 +71,7 @@ public class UserWebRest {
 
 	@RequestMapping("getMenuByAccount")
 	public CommonResult<String> getMenuByAccount(@RequestBody JSONObject request) {
-		User user = userService.getUserByAccount(request.getString("username"));
+		User user = userService.getUserByAccount(request.getString("username"));		
 		if(user==null) {
 			throw new UserNotExistsException();
 		}
@@ -159,9 +160,9 @@ public class UserWebRest {
 	
 	@RequestMapping("currentInfo")
 	public CommonResult<Integer> currentInfo(@RequestBody JSONObject request) {
-		log.info("当前用户信息开始");
-		log.info("account:"+request.getString("account"));
-		log.info("当前用户信息结束");
+		UserActivity userActivity = new UserActivity();
+		userActivity.setAccount(request.getString("account"));
+		userActivityService.insertNonEmptyUserActivity(userActivity);
 		return CommonResult.success();
 	}
 	
