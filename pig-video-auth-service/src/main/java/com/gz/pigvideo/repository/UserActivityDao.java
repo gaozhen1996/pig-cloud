@@ -2,7 +2,11 @@ package com.gz.pigvideo.repository;
 import com.gz.pigvideo.domain.UserActivity;
 import java.util.List;
 import com.gz.pigvideo.common.Assist;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+@Mapper
 public interface UserActivityDao{
 	/**
 	 * 获得UserActivity数据的总行数,可以通过辅助工具Assist进行条件查询,如果没有条件则传入null

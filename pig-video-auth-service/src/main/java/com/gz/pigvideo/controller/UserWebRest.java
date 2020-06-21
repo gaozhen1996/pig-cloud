@@ -20,7 +20,7 @@ import com.gz.pigvideo.domain.User;
 import com.gz.pigvideo.domain.UserActivity;
 import com.gz.pigvideo.exceptions.PasswordErrorException;
 import com.gz.pigvideo.exceptions.UserNotExistsException;
-import com.gz.pigvideo.repository.UserActivityDao;
+import com.gz.pigvideo.service.UserActivityService;
 import com.gz.pigvideo.service.UserService;
 
 @RestController
@@ -31,7 +31,7 @@ public class UserWebRest {
 	private UserService userService;
 	
 	@Autowired
-	private UserActivityDao userActivityService;
+	private UserActivityService userActivityService;
 
 	/**
 	 * 用户登录
@@ -162,7 +162,8 @@ public class UserWebRest {
 	public CommonResult<Integer> currentInfo(@RequestBody JSONObject request) {
 		UserActivity userActivity = new UserActivity();
 		userActivity.setAccount(request.getString("account"));
-		userActivityService.insertNonEmptyUserActivity(userActivity);
+		userActivity.setUid(request.getLong("id"));
+		userActivityService.insertUserActivity(userActivity);
 		return CommonResult.success();
 	}
 	
