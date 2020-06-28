@@ -162,7 +162,8 @@ public class UserWebRest {
 	public CommonResult<Integer> currentInfo(@RequestBody JSONObject request) {
 		UserActivity userActivity = new UserActivity();
 		userActivity.setAccount(request.getString("account"));
-		userActivity.setUid(request.getLong("id"));
+		userActivity.setBehavior("newTab");
+		userActivity.setId(request.getInteger("id"));
 		userActivityService.insertUserActivity(userActivity);
 		return CommonResult.success();
 	}

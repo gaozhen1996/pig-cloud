@@ -1,8 +1,10 @@
 package com.gz.pigvideo.repository;
+import com.gz.pigvideo.domain.NewTabCount;
 import com.gz.pigvideo.domain.UserActivity;
-import java.util.List;
-import com.gz.pigvideo.common.Assist;
 
+import java.util.List;
+
+import com.gz.pigvideo.common.Assist;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,7 +33,7 @@ public interface UserActivityDao{
 	 * @param id
 	 * @return
 	 */
-    UserActivity selectUserActivityById(Long id);
+    UserActivity selectUserActivityById(Integer id);
 	/**
 	 * 插入UserActivity到数据库,包括null值
 	 * @param value
@@ -55,7 +57,7 @@ public interface UserActivityDao{
 	 * @param id
 	 * @return
 	 */
-    int deleteUserActivityById(Long id);
+    int deleteUserActivityById(Integer id);
 	/**
 	 * 通过辅助工具Assist的条件删除UserActivity
 	 * @param assist
@@ -88,4 +90,13 @@ public interface UserActivityDao{
 	 * @return
 	 */
     int updateNonEmptyUserActivity(@Param("enti") UserActivity value, @Param("assist") Assist assist);
+    
+    /**
+     * 
+    * @Description: 通过开始和结束日志获取用户活跃度
+    * @author gaozhen
+     */
+    List<NewTabCount> selectCountByDate(@Param("startDate") long startDate,
+    		                                    @Param("endDate") long endDate,
+    		                                    @Param("behavior") String behavior);
 }
