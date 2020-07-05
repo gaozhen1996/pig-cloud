@@ -36,6 +36,10 @@ public class WebLogAspect {
     public void webLog() {
     }
 
+    @Pointcut("execution(public * com.gz.pigvideo.controller.WebPageShareRest.*(..))")
+    public void webLog1() {
+    }
+    
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) throws Throwable {
     }
@@ -44,7 +48,7 @@ public class WebLogAspect {
     public void doAfterReturning(Object ret) throws Throwable {
     }
 
-    @Around("webLog()")
+    @Around("webLog() && !webLog1()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
         //获取当前请求对象
