@@ -1,5 +1,6 @@
 package com.gz.pigvideo.service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -38,12 +39,39 @@ public class WebSocketService {
 	* @return void    返回类型
 	* @author gaozhen
 	 */
-	public void addOnlineUser(long id,String account,String name) {
+	public boolean  addOnlineUser(long id,String account,String name) {
+		boolean res = false;
 		User user = new User(id, account, name,System.currentTimeMillis());
 		this.onlineUsers.put(id, user);
+		res = true;
+		return res;
 	}
-	
-	public JSONArray listAllOnlineUsers(){
+	/**
+	 * 刪除在线的用户
+	 * @param id
+	 * @return
+	 */
+	public boolean delOnlineUser(long id) {
+		boolean res =false;
+		this.onlineUsers.remove(id);
+		res = true;
+		return res;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Map<Long, Long> getAllOnlineLastTime() {
+		Map<Long, Long> userid_lastTime = new HashMap<Long, Long>();
+		for (Long userid : this.onlineUsers.keySet()) {
+			User user = this.onlineUsers.get(userid);
+			userid_lastTime.put(userid, user.lastHeartTime);
+		}
+		return userid_lastTime;
+	}
+
+	public JSONArray listAllOnlineUsers(){		
 		JSONArray onlineUsers = new JSONArray();
 		for (long userId : this.onlineUsers.keySet()) {
 			User user = this.onlineUsers.get(userId);
