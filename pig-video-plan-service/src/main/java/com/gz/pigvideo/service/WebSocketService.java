@@ -110,7 +110,7 @@ public class WebSocketService {
 		template.convertAndSend(destination, sendMsgBody);		
 	}
 
-	private void sendOnlineUsers(long toUserId) {
+	public void sendOnlineUsers(long toUserId) {
 		String destination = "/topic/" + toUserId;
 		JSONObject sendMsgBody = new JSONObject();
 		sendMsgBody.put("type","onlineUsers");
