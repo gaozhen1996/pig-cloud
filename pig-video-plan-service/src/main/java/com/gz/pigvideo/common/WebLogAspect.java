@@ -36,7 +36,7 @@ public class WebLogAspect {
     public void webLog() {
     }
 
-    @Pointcut("execution(public * com.gz.pigvideo.controller.WebPageShareRest.*(..))")
+    @Pointcut("execution(public * com.gz.pigvideo.controller.WebsocketRest.*(..))")
     public void webLog1() {
     }
     

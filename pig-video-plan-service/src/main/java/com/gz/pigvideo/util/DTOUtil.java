@@ -9,13 +9,14 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
 import com.gz.pigvideo.domain.Note;
 import com.gz.pigvideo.domain.Plan;
+import com.gz.pigvideo.domain.Readlater;
 
 @Component
 public class DTOUtil {
 
-    private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private  DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     
-    private static DateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private  DateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
     public JSONObject plan2Object(Plan plan) {
     	
@@ -50,6 +51,18 @@ public class DTOUtil {
     	}else {
     		jsonObject.put("updateTime","");
     	}
+    	return jsonObject;
+    }
+
+    public JSONObject readlater2Object(Readlater readlater) {
+    	JSONObject jsonObject = new JSONObject();
+    	jsonObject.put("id", readlater.getId());
+    	jsonObject.put("uid", readlater.getUid());
+    	jsonObject.put("title", readlater.getTitle());
+    	jsonObject.put("createTime", timeFormat.format(readlater.getAddDate()));
+    	jsonObject.put("parentId", readlater.getParentId());
+    	jsonObject.put("readStatus",readlater.getReadStatus());
+    	jsonObject.put("url",readlater.getUrl());
     	return jsonObject;
     }
     

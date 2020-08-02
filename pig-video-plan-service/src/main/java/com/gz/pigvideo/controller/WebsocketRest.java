@@ -1,28 +1,26 @@
 package com.gz.pigvideo.controller;
 
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gz.pigvideo.api.CommonResult;
+import com.gz.pigvideo.domain.Readlater;
+import com.gz.pigvideo.service.ReadlaterService;
 import com.gz.pigvideo.service.WebSocketService;
 
 @RestController
-@RequestMapping("/webPageShare")
-public class WebPageShareRest {
+public class WebsocketRest {
 
 	@Autowired
 	private WebSocketService webSocketService;
 	
-    @RequestMapping("/send/{msg}")
-    public CommonResult<String> send(@PathVariable("msg") String msg) {
-    	webSocketService.sendMessageToWebUser("onlineUsers",1,1, msg);
-        return CommonResult.success("SUCCESS");
-    }
+	@Autowired
+	private ReadlaterService readlaterService;
   
     @MessageMapping("/accept")
     public CommonResult<String> accept(JSONObject msg) {
@@ -38,7 +36,18 @@ public class WebPageShareRest {
     		String account = msg.getString("fromUserAccount");
     		webSocketService.addOnlineUser(fromUser, account, name);
     		webSocketService.sendMessageToWebUser("onlineUsers",fromUser,fromUser, msgBody);
+    	}else if(toUser == -1 && "readlater".equalsIgnoreCase(msgBody)){
+    		//3.稍后阅读
+    		String url = msg.getString("url");
+    		String title = msg.getString("title");
+    		Readlater readlater = new Readlater();
+    		readlater.setAddDate(new Date());
+    		readlater.setUid((int)fromUser);
+    		readlater.setTitle(title);
+    		readlater.setUrl(url);
+    		readlaterService.insertReadlater(readlater);
     	}else {
+    		//4.分享网页
     		webSocketService.sendMessageToWebUser("sharePage",fromUser,toUser, msgBody);
     	}
     	return CommonResult.success("SUCCESS");
