@@ -127,7 +127,7 @@
     </insert>
 
     <!-- 将UserActivity中属性值不为null的数据,插入到对应数据库的表中-->
-    <insert id="insertNonEmptyUserActivity" parameterType="com.gz.pigvideo.domain.UserActivity">
+    <insert id="insertNonEmptyUserActivity" parameterType="com.gz.pigvideo.domain.UserActivity" useGeneratedKeys="true" keyProperty="id">
         insert into user_activity
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>

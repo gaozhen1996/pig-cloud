@@ -163,7 +163,7 @@ public class UserWebRest {
 		UserActivity userActivity = new UserActivity();
 		userActivity.setAccount(request.getString("account"));
 		userActivity.setBehavior("newTab");
-		userActivity.setId(request.getInteger("id"));
+		userActivity.setUid(request.getInteger("id"));
 		userActivityService.insertUserActivity(userActivity);
 		return CommonResult.success();
 	}
