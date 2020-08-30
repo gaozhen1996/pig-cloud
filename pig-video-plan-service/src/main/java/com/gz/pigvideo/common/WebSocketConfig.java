@@ -14,6 +14,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
  * @author gaozhen
  *
  */
+@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSocketMessageBroker // 注解使用STOMP协议传输基于代理消息
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
