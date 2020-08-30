@@ -19,6 +19,3 @@ begin
     
 end$$
 delimiter ;
-
-
-select * from  pig_video.plan  where uid = 1 and plan_type = 0 and plan_index >= 1   order by plan_index;
