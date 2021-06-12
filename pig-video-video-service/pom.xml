@@ -60,7 +60,11 @@
 			<scope>test</scope>
 		</dependency>
 
-
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-consul-discovery</artifactId>
+		</dependency>
+		
 		<!-- Maybatis 数据库映射 -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
