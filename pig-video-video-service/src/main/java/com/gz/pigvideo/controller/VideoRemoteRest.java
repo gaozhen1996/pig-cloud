@@ -2,8 +2,8 @@ package com.gz.pigvideo.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
+//import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+//import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +13,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.gz.pigvideo.service.VideoInfoService;
 
-@RabbitListener(queues = "saveVideoURL")
+//@RabbitListener(queues = "saveVideoURL")
 @RestController
 public class VideoRemoteRest {
 
@@ -22,7 +22,7 @@ public class VideoRemoteRest {
     @Autowired
     private VideoInfoService videoInfoService;
 
-    @RabbitHandler
+//    @RabbitHandler
     public void process(JSONArray urls) {
         try{
             for (Object obj:urls) {
