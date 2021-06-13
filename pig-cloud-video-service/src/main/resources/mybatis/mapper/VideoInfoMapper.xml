@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gz.pigcloud.repository.VideoInfoDao">
+    <!-- VideoInfo的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_VideoInfo_Map" type="com.gz.pigcloud.domain.VideoInfo">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="videoURL" property="videoURL" />
+        <result column="delFlag" property="delFlag" />
+        <result column="content" property="content" />
+        <result column="showFlag" property="showFlag" />
+    </resultMap>
+
+	   <!-- Assist用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+    <sql id="Assist">
+        <where>
+            <foreach collection="require" item="req" separator=" ">
+                ${req.require} 
+                <if test="req.value != null"> #{req.value}</if> 
+                <if test="req.values != null">
+                    <foreach collection="req.values" item="val" separator=","> 
+                        #{val} 
+                    </foreach> 
+                </if> 
+                <if test="req.suffix != null"> ${req.suffix}</if> 
+            </foreach>
+        </where>
+    </sql>
+
+	   <!-- updateAssist用于更新数据的使用它拓展自Assist,用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+    <sql id="updateAssist">
+        <where>
+            <foreach collection="assist.require" item="req" separator=" ">
+                ${req.require} 
+                <if test="req.value != null"> #{req.value}</if> 
+                <if test="req.values != null">
+                    <foreach collection="req.values" item="val" separator=","> 
+                        #{val} 
+                    </foreach> 
+                </if> 
+                <if test="req.suffix != null"> ${req.suffix}</if> 
+            </foreach>
+        </where>
+    </sql>
+
+    <!-- 数据库中表名为:video_info的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="video_info_Column">
+        video_info.id as id
+        ,video_info.create_time as create_time
+        ,video_info.videoURL as videoURL
+        ,video_info.delFlag as delFlag
+        ,video_info.content as content
+        ,video_info.showFlag as showFlag
+    </sql>
+
+    <select id="selectCountGreaterDate" parameterType="String" resultType="Integer">
+		select count(id)
+		  from (select id,date_format(from_unixtime(create_time/1000) ,'%Y-%m-%d') create_date from video_info) a
+		  where a.create_date >=#{date} group by a.create_date order by a.create_date ;
+    </select>
+
+    <!--获得类名为:VideoInfo对应的数据库表的数据总行数 -->
+    <select id="getVideoInfoRowCount" parameterType="com.gz.pigcloud.common.Assist" resultType="java.lang.Long">
+        select count(id) from video_info
+        <if test="require!=null"><include refid="Assist" /></if>
+    </select>
+    <!-- 获得类名为:VideoInfo对应数据库中表的数据集合 -->
+    <select id="selectVideoInfo" parameterType="com.gz.pigcloud.common.Assist" resultMap="result_VideoInfo_Map">
+        select  <if test="distinct !=null">${distinct}</if>
+        <choose>
+            <when test="resultColumn!=null">${resultColumn}</when>
+            <otherwise>
+        <include refid="video_info_Column" /> 
+            </otherwise>
+        </choose>
+        from video_info
+        <choose>
+            <when test="rowSize ==null">
+                <if test="require!=null">
+                    <include refid="Assist" />
+                </if>
+                <if test="order !=null">${order}</if>
+            </when>
+            <otherwise>
+                inner join
+                (
+                SELECT id as primary_key FROM video_info
+                <if test="require!=null">
+                    <include refid="Assist" />
+                </if>
+                <if test="order !=null">${order}</if>
+                <choose>
+                    <when test="startRow !=null and rowSize !=null">LIMIT #{startRow},#{rowSize} </when>
+                    <when test="rowSize !=null">LIMIT #{rowSize}</when>
+                 </choose>
+                 ) as tmp
+                 on tmp.primary_key=video_info.id
+            </otherwise>
+        </choose>
+    </select> 
+
+    <!-- 获得一个VideoInfo对象,以参数VideoInfo对象中不为空的属性作为条件进行查询-->
+    <select id="selectVideoInfoByObj" parameterType="com.gz.pigcloud.domain.VideoInfo" resultMap="result_VideoInfo_Map">
+        select 
+            <include refid="video_info_Column" /> 
+        from video_info
+        <where>
+            <if test="showFlag != null "> and video_info.showFlag = #{showFlag}</if>
+            <if test="content != null "> and video_info.content = #{content}</if>
+            <if test="delFlag != null "> and video_info.delFlag = #{delFlag}</if>
+            <if test="videoURL != null "> and video_info.videoURL = #{videoURL}</if>
+            <if test="createTime != null "> and video_info.create_time = #{createTime}</if>
+            <if test="id != null "> and video_info.id = #{id}</if>
+        </where>
+    </select> 
+
+    <!-- 通过VideoInfo的id获得对应数据库中表的数据对象-->
+    <select id="selectVideoInfoById" parameterType="java.lang.Long" resultMap="result_VideoInfo_Map">
+        select 
+            <include refid="video_info_Column" /> 
+        from video_info
+        where video_info.id = #{id}
+    </select> 
+
+    <!-- 将VideoInfo插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertVideoInfo" parameterType="com.gz.pigcloud.domain.VideoInfo">
+        insert into video_info(id,create_time,videoURL,delFlag,content,showFlag) 
+        values(#{id},#{createTime},#{videoURL},#{delFlag},#{content},#{showFlag})
+    </insert>
+
+    <!-- 将VideoInfo中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptyVideoInfo" parameterType="com.gz.pigcloud.domain.VideoInfo">
+        insert into video_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="videoURL != null">videoURL,</if>
+            <if test="delFlag != null">delFlag,</if>
+            <if test="content != null">content,</if>
+            <if test="showFlag != null">showFlag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id},</if>
+            <if test="createTime != null"> #{createTime},</if>
+            <if test="videoURL != null"> #{videoURL},</if>
+            <if test="delFlag != null"> #{delFlag},</if>
+            <if test="content != null"> #{content},</if>
+            <if test="showFlag != null"> #{showFlag},</if>
+        </trim>
+    </insert>
+
+    <!-- 将VideoInfo批量插入到对应数据库的表中-->
+    <insert id="insertVideoInfoByBatch" parameterType="ArrayList">
+        insert into video_info(id,create_time,videoURL,delFlag,content,showFlag) values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.id},#{item.createTime},#{item.videoURL},#{item.delFlag},#{item.content},#{item.showFlag})
+        </foreach>
+    </insert>
+
+    <!-- 通过VideoInfo的id将数据库表中对应的数据删除-->
+    <delete id="deleteVideoInfoById" parameterType="java.lang.Long">
+        delete from video_info
+        where id = #{id}
+    </delete>
+
+    <!-- 通过辅助工具Assist中的条件将VideoInfo对应的数据库表的数据删除-->
+    <delete id="deleteVideoInfo" parameterType="com.gz.pigcloud.common.Assist">
+        delete from video_info
+        <if test="require!=null"><include refid="Assist" /></if>
+    </delete>
+
+    <!-- 通过VideoInfo的id将VideoInfo的数据更新到数据库中对应的表,包括值null的数据-->
+    <update id="updateVideoInfoById" parameterType="com.gz.pigcloud.domain.VideoInfo">
+        update video_info set
+            create_time=#{createTime}
+            ,videoURL=#{videoURL}
+            ,delFlag=#{delFlag}
+            ,content=#{content}
+            ,showFlag=#{showFlag}
+        where id=#{id}
+    </update>
+
+    <!-- 通过VideoInfo的id将VideoInfo中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyVideoInfoById" parameterType="com.gz.pigcloud.domain.VideoInfo">
+        update video_info
+        <set>
+            <if test="createTime != null">
+                create_time=#{createTime},
+            </if>
+            <if test="videoURL != null">
+                videoURL=#{videoURL},
+            </if>
+            <if test="delFlag != null">
+                delFlag=#{delFlag},
+            </if>
+            <if test="content != null">
+                content=#{content},
+            </if>
+            <if test="showFlag != null">
+                showFlag=#{showFlag},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!-- 通过辅助工具Assist中的条件将VideoInfo中的数据更新到数据库对应的表中,包括值为null的数据-->
+    <update id="updateVideoInfo" parameterType="map">
+        update video_info
+        <set>
+                id=#{enti.id},
+                create_time=#{enti.createTime},
+                videoURL=#{enti.videoURL},
+                delFlag=#{enti.delFlag},
+                content=#{enti.content},
+                showFlag=#{enti.showFlag},
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+    <!-- 通过辅助工具Assist中的条件将VideoInfo中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyVideoInfo" parameterType="map">
+        update video_info
+        <set>
+            <if test="enti.id != null">
+                id=#{enti.id},
+            </if>
+            <if test="enti.createTime != null">
+                create_time=#{enti.createTime},
+            </if>
+            <if test="enti.videoURL != null">
+                videoURL=#{enti.videoURL},
+            </if>
+            <if test="enti.delFlag != null">
+                delFlag=#{enti.delFlag},
+            </if>
+            <if test="enti.content != null">
+                content=#{enti.content},
+            </if>
+            <if test="enti.showFlag != null">
+                showFlag=#{enti.showFlag},
+            </if>
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+</mapper>

@@ -4,22 +4,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 	<groupId>com.gz</groupId>
-	<artifactId>pig-video-parent</artifactId>
+	<artifactId>pig-cloud-parent</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 
 	<modules>
-		<module>pig-video-video-service</module>
+		<module>pig-cloud-video-service</module>
 		<module>pig-video-worm-service</module>
-		<module>pig-video-gateway-service</module>
-		<module>pig-video-plan-service</module>
-		<module>pig-video-auth-service</module>
-		<module>pig-video-monitor-service</module>
-		<module>pig-video-common</module>
+		<module>pig-cloud-gateway-service</module>
+		<module>pig-cloud-plan-service</module>
+		<module>pig-cloud-monitor-service</module>
+		<module>pig-cloud-common</module>
 	</modules>
 
 	<packaging>pom</packaging>
-	<name>Spring cloud pig-video</name>
-	<description>pig-video for Spring Cloud</description>
+	<name>Spring cloud pig-cloud</name>
+	<description>pig-cloud for Spring Cloud</description>
 
     <parent>
 		<groupId>org.springframework.boot</groupId>
