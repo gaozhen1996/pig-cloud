@@ -1,4 +1,4 @@
-package com.gz.pigvideo.common;
+package com.gz.pigvideo.config;
 
 //import org.springframework.amqp.core.Queue;
 //import org.springframework.context.annotation.Bean;
