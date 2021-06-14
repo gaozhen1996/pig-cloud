@@ -11,6 +11,7 @@
 /**/.vscode
 /**/__debug_bin
 /**/runtime
+/**/pig-cloud
 
 /.metadata/
 /**/app*
