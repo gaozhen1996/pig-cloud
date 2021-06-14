@@ -1,6 +1,7 @@
-pig-video-eureka        8000
-gateway-service-zuul    9050
-pig-video-worm-service  9001
-pig-video-video-service 8080
-pig-video-plan-service  8081
-pig-video-auth-service  9002
+# 前言
+该项目原名是pig-video，看短视频功能，后来做了计划管理功能，备忘录功能，做成了chrome形式，因为基础框架采用是springcloud，
+更改为pig-cloud。
+
+# 截图
+
+# 模块说明
