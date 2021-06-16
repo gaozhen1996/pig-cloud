@@ -14,5 +14,5 @@
 /**/pig-cloud
 
 /.metadata/
-/**/app*
+/**/log/*
 .DS_Store
