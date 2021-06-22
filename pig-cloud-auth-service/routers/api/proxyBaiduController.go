@@ -28,7 +28,7 @@ func LoadWd(c *gin.Context) {
 	code := e.SUCCESS
 	request := SerchWord{}
 	c.BindJSON(&request)
-	logging.Info(fmt.Sprintln("SeachWord[account:{0},wd:{1}]", request.Account, request.Wd))
+	logging.Info(fmt.Sprintln("SeachWord{account:" + request.Account + ",wd:" + request.Wd + "}"))
 	res, _ := http.Get("https://www.baidu.com/sugrec?prod=pc&wd=" + request.Wd)
 	body, _ := ioutil.ReadAll(res.Body)
 	returnData := BaiDuResponse{}
