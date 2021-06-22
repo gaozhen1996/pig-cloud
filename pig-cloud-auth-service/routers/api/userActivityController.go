@@ -26,6 +26,11 @@ func CurrentInfo(c *gin.Context) {
 		Behavior:   "newTab",
 	}
 	models.InsertUserActivity(userActivity)
+	code := e.SUCCESS
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.GetMsg(code),
+	})	
 }
 
 type NewTabCountBO struct {
