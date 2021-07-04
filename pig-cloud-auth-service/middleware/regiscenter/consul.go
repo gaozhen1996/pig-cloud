@@ -27,11 +27,11 @@ func RegisterServer() {
 	}
 
 	registration := new(consulapi.AgentServiceRegistration)
-	registration.ID = consul_setting.Key("node_id").String()       // 服务节点的名称
-	registration.Name = consul_setting.Key("server_name").String() // 服务名称
-	registration.Port = setting.HTTPPort                           // 服务端口
+	registration.Address = localIP()                                                                                          // 服务 IP
+	registration.ID = fmt.Sprintf("%s-%s-%d", consul_setting.Key("node_id").String(), registration.Address, setting.HTTPPort) // 服务节点id
+	registration.Name = consul_setting.Key("server_name").String()                                                            // 服务名称
+	registration.Port = setting.HTTPPort                                                                                      // 服务端口
 	//registration.Tags = []string{"v1000"} // tag，可以为空
-	registration.Address = localIP() // 服务 IP
 	checkPort := setting.HTTPPort
 	registration.Check = &consulapi.AgentServiceCheck{ // 健康检查
 		HTTP:                           fmt.Sprintf("http://%s:%d%s", registration.Address, checkPort, "/check"),

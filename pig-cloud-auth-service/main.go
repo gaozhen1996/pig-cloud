@@ -21,6 +21,9 @@ func start() {
 		WriteTimeout:   setting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
-	fmt.Printf("server start,port:%d \n",setting.HTTPPort)
-	s.ListenAndServe()
+	fmt.Printf("server start,port:%d \n", setting.HTTPPort)
+	err := s.ListenAndServe()
+	if err != nil {
+		fmt.Println(err)
+	}
 }
