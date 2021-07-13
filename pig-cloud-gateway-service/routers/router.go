@@ -20,10 +20,7 @@ func InitRouter() *gin.Engine {
 	r.GET("/check", regiscenter.ConsulCheck)
 	regiscenter.RegisterServer()
 
-	r.Use(api.Middle)
-	
+	r.Use(api.Router)
+
 	return r
 }
-
-
-

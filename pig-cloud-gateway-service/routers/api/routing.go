@@ -25,8 +25,8 @@ type TargetService struct {
 	HostPort   string
 }
 
-func Middle(c *gin.Context) {
-	target := GateWayRouter(c.Request.URL.Path)
+func Router(c *gin.Context) {
+	target := gateWayRouter(c.Request.URL.Path)
 	logging.Info(target)
 	u, _ := url.Parse(c.Request.URL.String())
 
@@ -52,7 +52,7 @@ func Middle(c *gin.Context) {
 	c.Next()
 }
 
-func GateWayRouter(url string) TargetService {
+func gateWayRouter(url string) TargetService {
 	/**
 	 *解析URL
 	 */
