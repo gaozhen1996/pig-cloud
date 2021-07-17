@@ -38,6 +38,7 @@ require (
 
 replace (
 	github.com/gaozhen1996/pig-cloud/conf => ~/userapp/go/src/pig-cloud/pkg/conf v1.0.0
+	github.com/gaozhen1996/pig-cloud/service => ~/userapp/go/src/pig-cloud/service v1.0.0
 	github.com/gaozhen1996/pig-cloud/middleware => ~/userapp/go/src/pig-cloud/middleware v1.0.0
 	github.com/gaozhen1996/pig-cloud/models => ~/userapp/go/src/pig-cloud/models v1.0.0
 	github.com/gaozhen1996/pig-cloud/pkg/setting => ~/userapp/go/src/pig-cloud/pkg/setting v1.0.0
