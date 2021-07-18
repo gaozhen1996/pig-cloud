@@ -11,11 +11,6 @@ import (
 	"github.com/gaozhen1996/pig-cloud/pkg/setting"
 )
 
-type Server struct {
-	Address     string
-	ServicePort int
-}
-
 type TargetService struct {
 	ResouceUrl string
 	HostPort   string
@@ -34,13 +29,19 @@ func GateWayRouter(url string) TargetService {
 	 */
 	serviceName := loadRouterRule(apiName)
 	/**
-	 * 获取需要路由的服务和IP
+	 * 从注册中心中获取需要路由的服务和IP
 	 */
-	service := getHostByName(serviceName)
+	servers := getHostByName(serviceName)
+	/**
+	 *根据路由规则来路由
+	 */
+	loadBalancer := &RoundRule{}
+	loadBalancer.apiName = apiName
+	server := loadBalancer.Choose(servers)
 	/**
 	 * 请求转发
 	 */
-	hostPort := fmt.Sprintf("%s:%d", service.Address, service.ServicePort)
+	hostPort := fmt.Sprintf("%s:%d", server.Address, server.ServicePort)
 
 	targetService := TargetService{
 		ResouceUrl: resouceUrl,
@@ -53,7 +54,7 @@ func GateWayRouter(url string) TargetService {
 /**
  *从consul中加载host和port
  */
-func getHostByName(name string) Server {
+func getHostByName(name string) []Server {
 	url := "http://" + setting.ConsulHost + "/v1/catalog/service/" + name
 	resp, _ := http.Get(url)
 	body, _ := ioutil.ReadAll(resp.Body)
@@ -62,15 +63,15 @@ func getHostByName(name string) Server {
 	var servers []Server
 	_ = json.Unmarshal([]byte(body), &servers)
 	if len(servers) > 0 {
-		var loadBalancer = &RandomLoadBalancer{}
-		return loadBalancer.Choose(servers)
+		return servers
 	} else {
 		logging.Error(name + "没有在注册中心中发现\n" + string(body))
 		s := Server{
 			Address:     "",
 			ServicePort: 0,
 		}
-		return s
+		servers = append(servers, s)
+		return servers
 	}
 
 }

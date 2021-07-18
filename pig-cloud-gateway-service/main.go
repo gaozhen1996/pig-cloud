@@ -3,12 +3,14 @@ package main
 import (
 	"fmt"
 	"net/http"
+
 	"github.com/gaozhen1996/pig-cloud/pkg/setting"
 	"github.com/gaozhen1996/pig-cloud/routers"
 )
 
 func main() {
 	start()
+	// fmt.Printf("%d\n", 1%1)
 }
 
 func start() {
