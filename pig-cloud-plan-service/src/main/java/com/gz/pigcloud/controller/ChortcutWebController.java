@@ -15,7 +15,7 @@ import com.gz.pigcloud.service.ChortcutService;
 
 @RestController
 @RequestMapping("/web/rest/chortcut")
-public class ChortcutWebRest {
+public class ChortcutWebController {
 
 	@Autowired
 	private ChortcutService chortcutService;

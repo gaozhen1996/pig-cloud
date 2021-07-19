@@ -17,7 +17,7 @@ import com.gz.pigcloud.util.DTOUtil;
 
 @RestController
 @RequestMapping("/web/rest/plan")
-public class PlanWebRest {
+public class PlanWebController {
 	
 	@Autowired
 	private PlanService planService;

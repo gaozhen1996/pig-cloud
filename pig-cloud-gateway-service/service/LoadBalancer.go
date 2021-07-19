@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"math/rand"
 )
 
@@ -51,6 +50,5 @@ func (rr *RoundRule) Choose(servers []Server) Server {
 			currentIndex: roundRule.currentIndex,
 		}
 	}
-	fmt.Println(roundRuleMap)
 	return servers[index]
 }

@@ -14,7 +14,7 @@ import com.gz.pigcloud.service.ReadlaterService;
 import com.gz.pigcloud.service.WebSocketService;
 
 @RestController
-public class WebsocketRest {
+public class WebsocketController {
 
 	@Autowired
 	private WebSocketService webSocketService;

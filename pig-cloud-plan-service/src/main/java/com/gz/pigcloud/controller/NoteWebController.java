@@ -15,7 +15,7 @@ import com.gz.pigcloud.service.NoteService;
 
 @RestController
 @RequestMapping("/web/rest/note")
-public class NoteWebRest {
+public class NoteWebController {
 	
 	@Autowired
 	private NoteService noteService;

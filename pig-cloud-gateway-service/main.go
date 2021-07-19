@@ -10,7 +10,6 @@ import (
 
 func main() {
 	start()
-	// fmt.Printf("%d\n", 1%1)
 }
 
 func start() {

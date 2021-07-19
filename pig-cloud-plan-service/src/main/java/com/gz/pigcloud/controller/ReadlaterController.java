@@ -15,7 +15,7 @@ import com.gz.pigcloud.service.ReadlaterService;
 
 @RestController
 @RequestMapping("/web/rest/readlater")
-public class ReadlaterRest {
+public class ReadlaterController {
 	
 	@Autowired
 	private ReadlaterService readlaterService;

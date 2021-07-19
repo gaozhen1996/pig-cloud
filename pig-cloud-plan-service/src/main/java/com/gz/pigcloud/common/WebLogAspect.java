@@ -36,7 +36,7 @@ public class WebLogAspect {
     public void webLog() {
     }
 
-    @Pointcut("execution(public * com.gz.pigcloud.controller.WebsocketRest.*(..))")
+    @Pointcut("execution(public * com.gz.pigcloud.controller.WebsocketController.*(..))")
     public void webLog1() {
     }
     
