@@ -2,6 +2,7 @@ package service
 
 import (
 	"math/rand"
+	"sync"
 )
 
 type Server struct {
@@ -32,21 +33,17 @@ type RoundRule struct {
 	apiName      string
 }
 
-var roundRuleMap map[string]RoundRule
+var lock sync.Mutex
 
 func (rr *RoundRule) Choose(servers []Server) Server {
-	//如果map中为空，则初始化
-	if len(roundRuleMap) == 0 {
-		roundRuleMap = make(map[string]RoundRule)
-	}
-	//取路由下标索引，计算下一次路由索引
-	var roundRule = roundRuleMap[rr.apiName]
+	//获取轮询规则缓存,取路由下标索引，计算下一次路由索引
+	var roundRule = cachePool.GetRoundRule(rr.apiName)
 	index := roundRule.currentIndex
 	roundRule.currentIndex++
 	roundRule.currentIndex = roundRule.currentIndex % len(servers)
 	//如果map中的对象与传过来不一样，则说明map中不存在，需要新增
 	if roundRule.apiName != rr.apiName {
-		roundRuleMap[rr.apiName] = RoundRule{
+		cachePool.roundRuleMap[rr.apiName] = RoundRule{
 			currentIndex: roundRule.currentIndex,
 		}
 	}

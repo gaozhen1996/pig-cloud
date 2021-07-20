@@ -1,14 +1,13 @@
 package service
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gaozhen1996/pig-cloud/pkg/logging"
 	"github.com/gaozhen1996/pig-cloud/pkg/setting"
+	"github.com/gaozhen1996/pig-cloud/pkg/util"
 )
 
 type TargetService struct {
@@ -24,6 +23,7 @@ func GateWayRouter(url string) TargetService {
 	end := strings.Index(url[1:], "/") + 1 //第二个斜杠
 	apiName := url[start:end]
 	resouceUrl := url[end:]
+
 	/**
 	 *根据api加载路由规则
 	 */
@@ -31,13 +31,7 @@ func GateWayRouter(url string) TargetService {
 	/**
 	 * 从注册中心中获取需要路由的服务和IP
 	 */
-	servers := getHostByName(serviceName)
-	/**
-	 *根据路由规则来路由
-	 */
-	loadBalancer := &RoundRule{}
-	loadBalancer.apiName = apiName
-	server := loadBalancer.Choose(servers)
+	server := getHostByServiceName(serviceName)
 	/**
 	 * 请求转发
 	 */
@@ -52,28 +46,22 @@ func GateWayRouter(url string) TargetService {
 }
 
 /**
- *从consul中加载host和port
+ *从consul中加载host和port,并根据路由规则来选择一个服务
  */
-func getHostByName(name string) []Server {
-	url := "http://" + setting.ConsulHost + "/v1/catalog/service/" + name
-	resp, _ := http.Get(url)
-	body, _ := ioutil.ReadAll(resp.Body)
-	defer resp.Body.Close()
-
-	var servers []Server
-	_ = json.Unmarshal([]byte(body), &servers)
-	if len(servers) > 0 {
-		return servers
-	} else {
-		logging.Error(name + "没有在注册中心中发现\n" + string(body))
-		s := Server{
-			Address:     "",
-			ServicePort: 0,
-		}
-		servers = append(servers, s)
-		return servers
+func getHostByServiceName(name string) Server {
+	var services = cachePool.GetService(name)
+	/**
+	 *根据路由规则来路由
+	 */
+	loadBalancer := &RoundRule{}
+	loadBalancer.apiName = name
+	var server = loadBalancer.Choose(services)
+	if !util.Telnet(server.Address, strconv.Itoa(server.ServicePort)) {
+		//如果有服务不可以，则更新一下缓存中的服务列表,并重新路由
+		services = ReloadServiceList(name)
+		server = loadBalancer.Choose(services)
 	}
-
+	return server
 }
 
 /**
