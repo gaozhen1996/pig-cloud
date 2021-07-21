@@ -11,8 +11,8 @@ import (
 )
 
 type CachePool struct {
-	roundRuleMap sync.Map            //轮询规则缓存,key:服务名
-	serviceMap   map[string][]Server //服务实例缓存,key:服务名
+	roundRuleMap sync.Map //轮询规则缓存,key:服务名
+	serviceMap   sync.Map //服务实例缓存,key:服务名
 }
 
 //缓存池实例
@@ -28,23 +28,21 @@ func (cp *CachePool) GetRoundRule(serviceName string) RoundRule {
 }
 
 func (cp *CachePool) GetService(serviceName string) []Server {
-
-	//如果map中为空，则初始化
-	if len(cp.serviceMap) == 0 {
-		cp.serviceMap = make(map[string][]Server)
-	}
-	var servers = cp.serviceMap[serviceName]
-	if len(servers) == 0 {
-		servers = getHostFromRegister(serviceName)
-		cp.serviceMap[serviceName] = servers
+	var res []Server
+	var servers, ok = cp.serviceMap.Load(serviceName)
+	if ok {
+		res = servers.([]Server)
+	} else {
+		res = getHostFromRegister(serviceName)
+		cachePool.serviceMap.Store(serviceName, res)
 	}
 
-	return servers
+	return res
 }
 
 func ReloadServiceList(serviceName string) []Server {
 	var services = getHostFromRegister(serviceName)
-	cachePool.serviceMap[serviceName] = services
+	cachePool.serviceMap.Store(serviceName, services)
 	return services
 }
 

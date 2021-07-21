@@ -6,14 +6,8 @@ import (
 	"net"
 
 	"github.com/gaozhen1996/pig-cloud/pkg/setting"
-	"github.com/gin-gonic/gin"
 	consulapi "github.com/hashicorp/consul/api"
 )
-
-// consul 服务端会自己发送请求，来进行健康检查
-func ConsulCheck(c *gin.Context) {
-	fmt.Fprintln(c.Writer, "{'status':'UP'}")
-}
 
 func RegisterServer() {
 	consul_setting, _ := setting.Cfg.GetSection("consul")
