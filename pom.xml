@@ -9,7 +9,7 @@
 
 	<modules>
 		<module>pig-cloud-video-service</module>
-		<module>pig-video-worm-service</module>
+		<module>pig-cloud-worm-service</module>
 		<module>pig-cloud-plan-service</module>
 		<module>pig-cloud-monitor-service</module>
 		<module>pig-cloud-common</module>
