@@ -1,6 +1,6 @@
 spring:
   application:
-    name: pig-cloud-plan-service
+    name: pig-cloud-video-service
 
   cloud:
     # Spring Cloud Consul 通用配置项，对应 ConsulProperties 类
