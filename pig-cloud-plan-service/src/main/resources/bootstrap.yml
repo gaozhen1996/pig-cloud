@@ -1,0 +1,38 @@
+server:
+  port: 8081
+  ip: 127.0.0.1
+
+spring:
+  application:
+    name: pig-cloud-plan-service
+
+  cloud:
+    # Spring Cloud Consul 通用配置项，对应 ConsulProperties 类
+    consul:
+      host: 127.0.0.1 # 注册地址
+      port: 8500 # Consul 端口
+      # consul配置中心
+      config:
+        enabled: true
+        prefix: pig-cloud
+        defaultContext: dev
+        data-key: plan-service
+        format: yaml
+        #import: optional:configserver:http://127.0.0.1:8500
+      # Spring Cloud Consul Discovery 配置项，对应 ConsulDiscoveryProperties 类
+      discovery:
+        enabled: true
+        register: true # 注册自身到consul
+        deregister: true # 服务停止时取消注册
+        heartbeat:
+          enabled: true
+        service-name: ${spring.application.name} # 注册到 Consul 的服务名，默认为 `spring.application.name` 配置项
+
+########################################################
+### mybatis
+########################################################
+mybatis:
+  config-location: classpath:mybatis-config.xml
+
+
+
