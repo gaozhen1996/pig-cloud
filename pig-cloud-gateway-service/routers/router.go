@@ -3,7 +3,6 @@ package routers
 import (
 	"fmt"
 
-	"github.com/gaozhen1996/pig-cloud/middleware/regiscenter"
 	"github.com/gaozhen1996/pig-cloud/pkg/setting"
 	"github.com/gaozhen1996/pig-cloud/routers/api"
 	"github.com/gin-gonic/gin"
@@ -22,7 +21,6 @@ func InitRouter() *gin.Engine {
 	r.GET("/check", func(c *gin.Context) {
 		fmt.Fprintln(c.Writer, "{'status':'UP'}")
 	})
-	regiscenter.RegisterServer()
 
 	r.Use(api.Router)
 

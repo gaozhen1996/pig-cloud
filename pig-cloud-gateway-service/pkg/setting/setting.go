@@ -2,14 +2,16 @@ package setting
 
 import (
 	"log"
+	"os"
 	"time"
 
+	"github.com/gaozhen1996/pig-cloud/pkg/logging"
 	"github.com/go-ini/ini"
 )
 
 var (
-	Cfg *ini.File
-
+	BootCfg *ini.File
+	Cfg     *ini.File
 	RunMode string
 
 	HTTPPort     int
@@ -18,24 +20,31 @@ var (
 
 	JwtSecret  string
 	ExpireTime int
-	
+
 	ConsulHost string
+	ConfigUrl  string
 )
 
 func init() {
 	var err error
-	Cfg, err = ini.Load("conf/app.ini")
+	//加载引导配置文件
+	BootCfg, err = ini.Load("conf/bootstrap.ini")
 	if err != nil {
-		log.Fatalf("Fail to parse 'conf/app.ini': %v", err)
+		logging.Error("Fail to parse 'conf/bootstrap.ini': %v", err)
 	}
-	LoadBase()
+	LoadConsul()
+
+	//加载配置中心的配置文件,加载完成后删掉
+	var configCenterFile = LoadConfigCenter(ConsulHost, ConfigUrl)
+	Cfg, err = ini.Load(configCenterFile)
+	if err != nil {
+		logging.Error("Fail to parse %s: %v", configCenterFile, err)
+	}
+	os.Remove(configCenterFile)
+
 	LoadServer()
 	LoadApp()
-	LoadConsul()
-}
 
-func LoadBase() {
-	RunMode = Cfg.Section("").Key("RUN_MODE").MustString("debug")
 }
 
 func LoadServer() {
@@ -45,6 +54,7 @@ func LoadServer() {
 	}
 
 	HTTPPort = sec.Key("HTTP_PORT").MustInt(8000)
+	RunMode = sec.Key("RUN_MODE").MustString("debug")
 	ReadTimeout = time.Duration(sec.Key("READ_TIMEOUT").MustInt(60)) * time.Second
 	WriteTimeout = time.Duration(sec.Key("WRITE_TIMEOUT").MustInt(60)) * time.Second
 }
@@ -54,11 +64,12 @@ func LoadApp() {
 	ExpireTime = 12
 }
 
-func LoadConsul(){
-	sec, err := Cfg.GetSection("server")
+func LoadConsul() {
+	sec, err := BootCfg.GetSection("consul")
 	if err != nil {
 		log.Fatalf("Fail to get section 'consul': %v", err)
 	}
 
 	ConsulHost = sec.Key("consul_host").MustString("127.0.0.1:8500")
+	ConfigUrl = sec.Key("config_url").MustString("pig-cloud/pig-cloud-auth-service/app")
 }

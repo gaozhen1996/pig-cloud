@@ -10,7 +10,7 @@ import (
 )
 
 func RegisterServer() {
-	consul_setting, _ := setting.Cfg.GetSection("consul")
+	consul_setting, _ := setting.BootCfg.GetSection("consul")
 
 	config := consulapi.DefaultConfig()
 	config.Address = consul_setting.Key("consul_host").String()
