@@ -38,26 +38,31 @@ func init() {
 
 func Debug(v ...interface{}) {
 	setPrefix(DEBUG)
+	fmt.Println(v...)
 	logger.Println(v...)
 }
 
 func Info(v ...interface{}) {
 	setPrefix(INFO)
+	fmt.Println(v...)
 	logger.Println(v...)
 }
 
 func Warn(v ...interface{}) {
 	setPrefix(WARNING)
+	fmt.Println(v...)
 	logger.Println(v...)
 }
 
 func Error(v ...interface{}) {
 	setPrefix(ERROR)
+	fmt.Println(v...)
 	logger.Println(v...)
 }
 
 func Fatal(v ...interface{}) {
 	setPrefix(FATAL)
+	fmt.Println(v...)
 	logger.Fatalln(v...)
 }
 

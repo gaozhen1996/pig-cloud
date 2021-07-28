@@ -23,7 +23,11 @@ func LoadConfigCenter(host, configCenterUrl string) string {
 	defer resp.Body.Close()
 
 	var kvArr []Consul_KV
-	_ = json.Unmarshal([]byte(body), &kvArr)
+	err := json.Unmarshal([]byte(body), &kvArr)
+
+	if err != nil {
+		logging.Error("读取配置中心出错：" + err.Error())
+	}
 
 	// 对上面的编码结果进行base64解码
 	decodeBytes, err := base64.StdEncoding.DecodeString(kvArr[0].Value)
