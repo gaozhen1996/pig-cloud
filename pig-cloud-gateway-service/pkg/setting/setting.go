@@ -12,15 +12,18 @@ import (
 var (
 	BootCfg *ini.File
 	Cfg     *ini.File
-	RunMode string
 
+	//server
+	RunMode      string
 	HTTPPort     int
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 
+	//app
 	JwtSecret  string
 	ExpireTime int
 
+	//consul
 	ConsulHost string
 	ConfigUrl  string
 )
@@ -34,13 +37,20 @@ func init() {
 	}
 	LoadConsul()
 
-	//加载配置中心的配置文件,加载完成后删掉
-	var configCenterFile = LoadConfigCenter(ConsulHost, ConfigUrl)
-	Cfg, err = ini.Load(configCenterFile)
-	if err != nil {
-		logging.Error("Fail to parse %s: %v", configCenterFile, err)
+	/**
+	 * 没有配置中心，则不读取配置中心配置
+	 */
+	if ConfigUrl == "" {
+		Cfg = BootCfg
+	} else {
+		//加载配置中心的配置文件,加载完成后删掉
+		var configCenterFile = LoadConfigCenter(ConsulHost, ConfigUrl)
+		Cfg, err = ini.Load(configCenterFile)
+		if err != nil {
+			logging.Error("Fail to parse %s: %v", configCenterFile, err)
+		}
+		os.Remove(configCenterFile)
 	}
-	os.Remove(configCenterFile)
 
 	LoadServer()
 	LoadApp()
@@ -71,5 +81,5 @@ func LoadConsul() {
 	}
 
 	ConsulHost = sec.Key("consul_host").MustString("127.0.0.1:8500")
-	ConfigUrl = sec.Key("config_url").MustString("pig-cloud/pig-cloud-auth-service/app")
+	ConfigUrl = sec.Key("config_url").MustString("")
 }
