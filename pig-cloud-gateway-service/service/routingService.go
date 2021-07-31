@@ -35,7 +35,7 @@ func GateWayRouter(url string) TargetService {
 	/**
 	 * 请求转发
 	 */
-	hostPort := fmt.Sprintf("%s:%d", server.Address, server.ServicePort)
+	hostPort := fmt.Sprintf("%s:%d", server.ServiceAddress, server.ServicePort)
 
 	targetService := TargetService{
 		ResouceUrl: resouceUrl,
@@ -56,7 +56,7 @@ func getHostByServiceName(name string) Server {
 	loadBalancer := &RoundRule{}
 	loadBalancer.apiName = name
 	var server = loadBalancer.Choose(services)
-	if !util.Telnet(server.Address, strconv.Itoa(server.ServicePort)) {
+	if !util.Telnet(server.ServiceAddress, strconv.Itoa(server.ServicePort)) {
 		//如果有服务不可以，则更新一下缓存中的服务列表,并重新路由
 		services = ReloadServiceList(name)
 		server = loadBalancer.Choose(services)

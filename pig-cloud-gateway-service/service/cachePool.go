@@ -62,8 +62,8 @@ func getHostFromRegister(name string) []Server {
 	} else {
 		logging.Error(name + "没有在注册中心中发现\n" + string(body))
 		s := Server{
-			Address:     "",
-			ServicePort: 0,
+			ServiceAddress: "",
+			ServicePort:    0,
 		}
 		servers = append(servers, s)
 		return servers

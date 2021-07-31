@@ -6,8 +6,8 @@ import (
 )
 
 type Server struct {
-	Address     string
-	ServicePort int
+	ServiceAddress string
+	ServicePort    int
 }
 
 type LoadBalancer interface {
