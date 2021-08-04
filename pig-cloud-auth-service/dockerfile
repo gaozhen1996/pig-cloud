@@ -1,14 +1,13 @@
-FROM golang:alpine
-MAINTAINER gaozhen "3168175817@qq.com"
-# docker中的工作目录
-WORKDIR $GOPATH/src/gin_docker
-# 将当前目录同步到docker工作目录下，也可以只配置需要的目录和文件（配置目录、编译后的程序等）
-ADD . ./
-# 由于所周知的原因，某些包会出现下载超时。这里在docker里也使用go module的代理服务
+# 第一阶段
+FROM golang AS my_build_stage
+WORKDIR $GOPATH/src/
+ADD . .
 ENV GO111MODULE=on
 ENV GOPROXY="https://goproxy.io"
-# 指定编译完成后的文件名，可以不设置使用默认的，最后一步要执行该文件名
-RUN go build -o pig-cloud-auth-service .
-EXPOSE 9002
-# 这里跟编译完的文件名一致
-ENTRYPOINT  ["./pig-cloud-auth-service"]
+RUN go build main.go
+# 第二阶段
+FROM busybox:glibc
+COPY --from=my_build_stage /go/src/main .
+COPY --from=my_build_stage /go/src/conf/bootstrap.ini ./conf/bootstrap.ini
+# COPY --from=0 hello . 与COPY --from=my_build_stage hello .等效 0表示第一阶段
+CMD ["./main"]
