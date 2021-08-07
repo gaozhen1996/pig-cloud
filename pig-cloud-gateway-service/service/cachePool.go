@@ -51,6 +51,7 @@ func ReloadServiceList(serviceName string) []Server {
  */
 func getHostFromRegister(name string) []Server {
 	url := "http://" + setting.ConsulHost + "/v1/catalog/service/" + name
+	logging.Info(url)
 	resp, _ := http.Get(url)
 	body, _ := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
