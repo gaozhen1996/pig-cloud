@@ -22,7 +22,9 @@ func InitRouter() *gin.Engine {
 		fmt.Fprintln(c.Writer, "{'status':'UP'}")
 	})
 
-	r.Use(api.Router)
+	api.SentinelInit()
+	api.CreateFlowRule("FlowLimit", 500, 100)
+	r.Use(api.FlowLimit)
 
 	return r
 }

@@ -3,6 +3,7 @@ module github.com/gaozhen1996/pig-cloud
 go 1.14
 
 require (
+	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.7.1
 	github.com/go-ini/ini v1.62.0
@@ -38,10 +39,11 @@ require (
 
 replace (
 	github.com/gaozhen1996/pig-cloud/conf => ~/userapp/go/src/pig-cloud/pkg/conf v1.0.0
-	github.com/gaozhen1996/pig-cloud/service => ~/userapp/go/src/pig-cloud/service v1.0.0
 	github.com/gaozhen1996/pig-cloud/middleware => ~/userapp/go/src/pig-cloud/middleware v1.0.0
 	github.com/gaozhen1996/pig-cloud/models => ~/userapp/go/src/pig-cloud/models v1.0.0
 	github.com/gaozhen1996/pig-cloud/pkg/setting => ~/userapp/go/src/pig-cloud/pkg/setting v1.0.0
+	github.com/gaozhen1996/pig-cloud/pkg/e => ~/userapp/go/src/pig-cloud/pkg/e v1.0.0
 	github.com/gaozhen1996/pig-cloud/routers => ~/userapp/go/src/pig-cloud/routers v1.0.0
 	github.com/gaozhen1996/pig-cloud/routers/api => ~/userapp/go/src/pig-cloud/routers/api v1.0.0
+	github.com/gaozhen1996/pig-cloud/service => ~/userapp/go/src/pig-cloud/service v1.0.0
 )
