@@ -24,10 +24,7 @@ require (
 	github.com/swaggo/swag v1.7.0
 	github.com/ugorji/go v1.2.5 // indirect
 	github.com/unknwon/com v1.0.1
-	golang.org/x/crypto v0.0.0-20210506145944-38f3c27a63bf // indirect
-	golang.org/x/net v0.0.0-20210508051633-16afe75a6701 // indirect
-	golang.org/x/sys v0.0.0-20210507161434-a76c4d0a0096 // indirect
-	golang.org/x/tools v0.1.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
 	gopkg.in/ini.v1 v1.47.0 // indirect
 )
 
